@@ -21,14 +21,8 @@
     <h1>Tabla de Cursos</h1>
     <?php
     // Conexión a la base de datos. Aquí debes agregar tus propios detalles de conexión.
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "phpmyadmin";
-
-
-    // Crear conexión
-    $conn = new mysqli($servername, $username, $password, $dbname);
+    require '../conexion.php';
+    $conn = conectar();
 
     // Verificar conexión
     if ($conn->connect_error) {
@@ -36,10 +30,10 @@
     }
 
     // Consulta para obtener los cursos con sus aulas y horarios
-    $sql = "SELECT c.curso, c.aula, h.dia, h.hora_inicio, h.hora_fin
-            FROM cursos c
-            INNER JOIN horario_curso hc ON c.id = hc.curso_id
-            INNER JOIN horario h ON hc.horario_id = h.id";
+    $sql = "SELECT DISTINCT c.curso, c.aula, h.dia, h.hora_inicio, h.hora_fin
+    FROM cursos c
+    INNER JOIN horario_curso hc ON c.id = hc.curso_id  
+    INNER JOIN horario h ON hc.horario_id = h.id";
 
     $result = $conn->query($sql);
 

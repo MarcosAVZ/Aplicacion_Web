@@ -8,20 +8,36 @@
 <?php
 include '../Conexion.php';
 
+// Comenzar la sesión
 session_start();
 
-if(!isset($_SESSION['user_id'])){
-  header('Location: index.php');
-  exit;
-}
+// Verificar si el usuario está autenticado como docente
+if (isset($_SESSION['user_id'])) {
+  // Obtener el ID del docente de la variable de sesión
+  $docenteId = $_SESSION['user_id'];
 
-$docente_id = $_SESSION['user_id'];
+  // Obtener el nombre del docente de la base de datos
+  $db = conectar(); // Asegúrate de tener la conexión a la base de datos establecida
+  $query = "SELECT nombre FROM docentes WHERE id = $docenteId";
+  $result = mysqli_query($db, $query);
+  $row = mysqli_fetch_assoc($result);
+  $nombreDocente = $row['nombre'];
+
+  // Imprimir el mensaje de bienvenida
+  echo "Hola $nombreDocente, bienvenido al Área del Docente.";
+} else {
+  // Si el usuario no está autenticado, redirigir al archivo de inicio de sesión
+  header('Location: index.php');
+  exit();
+}
 ?>
 
 
   <h1>Bienvenido Docente</h1>
-  <a href="Docente.php">Volver</a>
+  
   <a href="listaAlumnos.php">Alumnos</a>
+  <a href="AulasDesig.php">Aula Designada</a>
+  <a href="calificar.php">Calificar</a>
   //Módulos de pago de cuotas, alumnos, horarios y aulas
   
 </body>
