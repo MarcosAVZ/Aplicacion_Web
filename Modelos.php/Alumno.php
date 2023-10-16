@@ -1,4 +1,6 @@
 <?php
+
+require_once 'conexion.php';
 class Alumno {
 
 public $id;
@@ -6,19 +8,32 @@ public $nombre;
 public $apellido;
 public $curso_id;
 
-    public function listar() { 
-            $db = ConnectToDatabase(); 
-            $query = "SELECT * FROM alumnos"; 
-            $resultado = $db->query($query); 
-            return $resultado->fetchAll(); 
-    }
+  
     
-    public function obtenerPorId($id) {
-        $db = ConnectToDatabase();
-        $query = "SELECT * FROM alumnos WHERE id = ?";
-        $sentencia = $db->prepare($query);
-        $sentencia->execute([$id]);
-        return $sentencia->fetchObject('Alumno'); 
+    public function listar() {
+
+        $db = conectar();
+
+        $query = "SELECT * FROM alumnos";
+
+        $resultado = $db->query($query);
+
+        $datos = [];
+
+        while($fila = $resultado->fetch_assoc()) {
+
+            $id = $fila['id'];
+            $nombre = $fila['nombre'];  
+            $email = $fila['email'];
+
+            $alumno = new Alumno($id, $nombre, $email);
+
+            $datos[] = $alumno;
+
+        }
+
+    return $datos;
+
     }
 
     public function insertar($datos) {

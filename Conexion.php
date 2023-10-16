@@ -12,8 +12,6 @@
             if(!$conn) {
               echo "Error: No se pudo conectar a MySQL.";
               exit;
-            }else{
-                echo "Conectooo";
             }
           
             return $conn;
