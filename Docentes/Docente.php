@@ -37,8 +37,7 @@ if (isset($_SESSION['user_id'])) {
   
   <a href="listaAlumnos.php">Alumnos</a>
   <a href="AulasDesig.php">Aula Designada</a>
-  <a href="calificar.php">Calificar</a>
-  //Módulos de pago de cuotas, alumnos, horarios y aulas
+  <a href="Examenes/examenes.php">Examenes</a>
   
 </body>
 </html>

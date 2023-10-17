@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($row) {
     // Redirigir al enlace de alumnos
     $_SESSION['user_id'] = $row['id'];
-    header('Location: enlace_alumnos.php');
+    header('Location: Alumno/Alumno.php');
     exit();
   }
 
