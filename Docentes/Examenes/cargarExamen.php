@@ -4,7 +4,6 @@
     <title>Agregar Examen</title>
 </head>
 <body>
-    <a href="examenes.php">volver</a>
     <h1>Agregar Examen</h1>
 
     <?php
