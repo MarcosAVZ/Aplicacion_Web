@@ -1,82 +1,84 @@
-<?php
-// Obtener el ID del docente que ha iniciado sesión (puedes obtenerlo de la sesión o de otro método de autenticación)
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Selección de Curso</title>
+</head>
+<body>
+    <h1>Selección de Curso</h1>
 
-// Conexión a la base de datos
-require_once '../conexion.php';
+    <?php
+    include '../Conexion.php';
 
-$conn = conectar();
-// Verificar la conexión
-session_start();
+    // Conectarse a la base de datos
+    $conexion = conectar();
 
-// Verificar si el usuario está autenticado como docente
-if (isset($_SESSION['user_id'])) {
-  // Obtener el ID del docente de la variable de sesión
-  $docenteId = $_SESSION['user_id'];
+    // Obtener el id del docente
+    $id_docente = 1;
 
-  // Ejecutar la consulta para obtener los cursos del docente
-  $queryCursos = "
-    SELECT DISTINCT c.id, c.curso, c.aula
-    FROM cursos c
-    JOIN docentes_cursos dc ON c.id = dc.id_curso
-    JOIN docentes d ON dc.id_docente = " . $docenteId;
+    // Consulta para obtener los cursos del docente
+    $cursos_docente = "SELECT c.id, c.nombre FROM cursodocente cd INNER JOIN curso c ON c.id = cd.idCurso WHERE cd.idDocente = $id_docente";
+    $resultado_cursos_docente = mysqli_query($conexion, $cursos_docente);
 
-  $resultCursos = mysqli_query($conn, $queryCursos);
-}
+    // Mostrar formulario para seleccionar el curso
+    echo "<form action='' method='GET'>";
+    echo "<select name='curso'>";
+    while ($row = mysqli_fetch_array($resultado_cursos_docente)) {
+        $id_curso = $row['id'];
+        $nombre_curso = $row['nombre'];
+        echo "<option value='$id_curso'>$nombre_curso</option>";
+    }
+    echo "</select>";
+    echo "<input type='submit' value='Ver Alumnos'>";
+    echo "</form>";
 
-// Obtener el ID del curso seleccionado (si se ha enviado el formulario)
-$cursoSeleccionado = isset($_POST['curso']) ? $_POST['curso'] : null;
+    // Verificar si se ha seleccionado un curso
+    if (isset($_GET['curso'])) {
+        $id_curso_seleccionado = $_GET['curso'];
 
-// Ejecutar la consulta para obtener los alumnos del curso seleccionado
-if ($cursoSeleccionado) {
-  $queryAlumnos = "
-    SELECT DISTINCT a.nombre, a.legajo, a.correo, a.DNI  
-    FROM alumnos a
-    JOIN alumnoscursos ac ON a.id = ac.alumno_id
-    JOIN cursos c ON ac.curso_id = c.id    
-    WHERE c.id = " . $cursoSeleccionado;
+        // Consulta para obtener el nombre del curso seleccionado
+        $consulta_curso = "SELECT nombre FROM curso WHERE id = $id_curso_seleccionado";
+        $resultado_consulta_curso = mysqli_query($conexion, $consulta_curso);
 
-  $resultAlumnos = mysqli_query($conn, $queryAlumnos);
-}
+        if (mysqli_num_rows($resultado_consulta_curso) > 0) {
+            $row_curso = mysqli_fetch_assoc($resultado_consulta_curso);
+            $nombre_curso_seleccionado = $row_curso['nombre'];
 
-?>
-<a href="Docente.php">Volver</a>
+            // Consulta para verificar si el docente está relacionado con el curso seleccionado
+            $consulta_relacion = "SELECT * FROM cursodocente WHERE idCurso = $id_curso_seleccionado AND idDocente = $id_docente";
+            $resultado_consulta_relacion = mysqli_query($conexion, $consulta_relacion);
 
-<!-- Selector de cursos -->
-<form method="POST" action="">
-  <label for="curso">Selecciona un curso:</label>
-  <select name="curso" id="curso" onchange="this.form.submit()">
-    <option value="">Seleccione un curso</option>
-    <?php while($row = mysqli_fetch_array($resultCursos)) { ?>
-      <option value="<?php echo $row['id']; ?>" <?php if ($cursoSeleccionado == $row['id']) echo 'selected'; ?>><?php echo $row['curso']; ?></option>
-    <?php } ?>
-  </select>
-  <noscript><input type="submit" value="Submit"></noscript>
-</form>
+            if (mysqli_num_rows($resultado_consulta_relacion) > 0) {
+                // Consulta para obtener los alumnos del curso seleccionado
+                $alumnos_curso = "SELECT a.legajo, a.nombre, a.correo FROM alumnocurso ac INNER JOIN alumno a ON a.id = ac.idAlumno WHERE ac.idCurso = $id_curso_seleccionado";
+                $resultado_alumnos_curso = mysqli_query($conexion, $alumnos_curso);
 
-<table>
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Legajo</th> 
-      <th>Correo</th>
-      <th>DNI</th>
-    </tr> 
-  </thead>
-  
-  <tbody>
-  <?php if ($cursoSeleccionado && $resultAlumnos->num_rows > 0) {
-    while($row = mysqli_fetch_array($resultAlumnos)) { ?>
-      <tr>
-        <td><?php echo $row["nombre"]; ?></td>
-        <td><?php echo $row["legajo"]; ?></td>  
-        <td><?php echo $row["correo"]; ?></td>
-        <td><?php echo $row["DNI"]; ?></td>
-      </tr>
-    <?php }
-  } else { ?>
-    <tr>
-      <td colspan="4">No hay alumnos disponibles para el curso seleccionado.</td>
-    </tr>
-  <?php } ?>
-  </tbody>
-</table>
+                // Mostrar el nombre del curso seleccionado
+                echo "<h2>Curso seleccionado: $nombre_curso_seleccionado</h2>";
+
+                // Mostrar los alumnos del curso seleccionado en una tabla
+                echo "<table>";
+                echo "<tr><th>Legajo</th><th>Nombre</th><th>Correo</th></tr>";
+                while ($fila = mysqli_fetch_array($resultado_alumnos_curso)) {
+                    echo "<tr>";
+                    echo "<td>{$fila['legajo']}</td>";
+                    echo "<td>{$fila['nombre']}</td>";
+                    echo "<td>{$fila['correo']}</td>";
+                    echo "</tr>";
+                }
+                echo "</table>";
+            } else {
+                echo "<p>El docente no está relacionado con el curso seleccionado</p>";
+            }
+        } else {
+            echo "<p>Curso no encontrado</p>";
+        }
+    }
+
+    // Cerrar la conexión
+    mysqli_close($conexion);
+    ?>
+
+    <br>
+    <a href="Docente.php">Volver</a>
+</body>
+</html>

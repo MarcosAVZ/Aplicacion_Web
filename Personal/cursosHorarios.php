@@ -1,70 +1,67 @@
+<a href="CuHo.php">Volver</a>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Tabla de Cursos</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-        th, td {
-            text-align: left;
-            padding: 8px;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-    </style>
-    <a href="personal.php">Volver</a>
+  <title>Formulario de Horarios</title>
 </head>
 <body>
-    <h1>Tabla de Cursos</h1>
-    <?php
-    // Conexión a la base de datos. Aquí debes agregar tus propios detalles de conexión.
-    require '../conexion.php';
-    $conn = conectar();
+  <h1>Formulario de Horarios</h1>
 
-    // Verificar conexión
-    if ($conn->connect_error) {
-        die("Error en la conexión: " . $conn->connect_error);
-    }
+  <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+    <label for="dia">Día:</label>
+    <select id="dia" name="dia">
+      <option value="lunes">Lunes</option>
+      <option value="martes">Martes</option>
+      <option value="miercoles">Miércoles</option>
+      <option value="jueves">Jueves</option>
+      <option value="viernes">Viernes</option>
+      <option value="sabado">Sábado</option>
+    </select>
+    <br>
 
-    // Consulta para obtener los cursos con sus aulas y horarios
-    $sql = "SELECT DISTINCT c.curso, c.aula, h.dia, h.hora_inicio, h.hora_fin
-    FROM cursos c
-    INNER JOIN horario_curso hc ON c.id = hc.curso_id  
-    INNER JOIN horario h ON hc.horario_id = h.id";
+    <label for="horaInicio">Hora de inicio:</label>
+    <input type="time" id="horaInicio" name="horaInicio"><br>
 
-    $result = $conn->query($sql);
+    <label for="horaFin">Hora de fin:</label>
+    <input type="time" id="horaFin" name="horaFin"><br>
 
-    // Verificar si se encontraron registros
-    if ($result->num_rows > 0) {
-        // Imprimir la tabla
-        echo "<table>
-                <tr>
-                    <th>Curso</th>
-                    <th>Aula</th>
-                    <th>Día</th>
-                    <th>Hora de inicio</th>
-                    <th>Hora de fin</th>
-                </tr>";
-        // Recorrer los resultados de la consulta
-        while ($row = $result->fetch_assoc()) {
-            echo "<tr>
-                    <td>".$row["curso"]."</td>
-                    <td>".$row["aula"]."</td>
-                    <td>".$row["dia"]."</td>
-                    <td>".$row["hora_inicio"]."</td>
-                    <td>".$row["hora_fin"]."</td>
-                </tr>";
-        }
-        echo "</table>";
-    } else {
-        echo "No se encontraron cursos.";
-    }
+    <label for="Aula">Aula:</label>
+    <input type="text" id="Aula" name="Aula"><br>
 
-    // Cerrar conexión
-    $conn->close();
-    ?>
+    <input type="submit" value="Guardar">
+  </form>
+
+  <?php
+  // Conexión a la base de datos
+  include '../Conexion.php';
+
+  // Conectarse a la base de datos
+  $conn = conectar();
+
+  // Verificar la conexión
+  if ($conn->connect_error) {
+      die("Error de conexión: " . $conn->connect_error);
+  }
+
+  // Procesar el formulario cuando se envíe
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      $dia = $_POST["dia"];
+      $horaInicio = $_POST["horaInicio"];
+      $horaFin = $_POST["horaFin"];
+      $Aula = $_POST["Aula"];
+
+      // Consulta para insertar los datos en la tabla de horarios
+      $sql = "INSERT INTO horario (dia, horaInicio, horaFin, Aula) VALUES ('$dia', '$horaInicio', '$horaFin', '$Aula')";
+
+      if ($conn->query($sql) === TRUE) {
+          echo "<p>Horario guardado exitosamente</p>";
+      } else {
+          echo "<p>Error al guardar el horario: " . $conn->error . "</p>";
+      }
+  }
+
+  // Cerrar la conexión
+  $conn->close();
+  ?>
 </body>
 </html>
