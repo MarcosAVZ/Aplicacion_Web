@@ -1,97 +1,61 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Aulas Designadas</title>
-</head>
-<body>
-    <h1>Aulas Designadas</h1>
-    <a href="Docente.php">Volver</a>
-    <?php
-    // Obtener el ID del docente actual (puedes reemplazar esto con tu lógica de autenticación)
-    require_once '../conexion.php';
+<a href="Docente.php">Volver</a>
+<?php
+// Conexión a la base de datos
+require '../conexion.php';
+$conn = conectar();
 
-    $conn = conectar();
-    // Verificar la conexión
-    session_start();
+// ID del docente (conocido de antemano)
+$docenteId = 1;
 
-    // Verificar si el usuario está autenticado como docente
-    if (isset($_SESSION['user_id'])) {
-        // Obtener el ID del docente de la variable de sesión
-        $docente_Id = $_SESSION['user_id'];
-    } else {
-        // Manejar el caso en el que el docente no esté autenticado
-        // Puedes redirigirlo a una página de inicio de sesión o mostrar un mensaje de error
-        die("Docente no autenticado");
-    }
+// Consulta para obtener los cursos vinculados al docente
+$sql = "SELECT c.id, c.nombre FROM curso c
+        INNER JOIN cursodocente cd ON c.id = cd.idCurso
+        WHERE cd.idDocente = $docenteId";
 
-    // Obtener los cursos vinculados al docente
-    $sql = "SELECT DISTINCT cursos.id, cursos.curso, cursos.aula
-            FROM cursos
-            INNER JOIN docentes_cursos ON cursos.id = docentes_cursos.id_curso
-            WHERE docentes_cursos.id_docente = $docente_Id";
+$result = $conn->query($sql);
 
-    $result = $conn->query($sql);
+if ($result->num_rows > 0) {
+    // Mostrar los cursos y sus horarios en forma de tabla
+    echo "<table>
+            <tr>
+                <th>Curso</th>
+                <th>Día</th>
+                <th>Horario de inicio</th>
+                <th>Horario de fin</th>
+                <th>Aula</th>
+            </tr>";
 
-    // Crear el selector de cursos
-    echo "<form method='POST' action='AulasDesig.php'>";
-    echo "<label for='curso'>Selecciona un curso:</label>";
-    echo "<select name='curso' id='curso'>";
     while ($row = $result->fetch_assoc()) {
-        $curso_id = $row['id'];
-        $curso_nombre = $row['curso'];
-        $curso_aula = $row['aula'];
-        echo "<option value='$curso_id'>$curso_nombre</option>";
-    }
-    echo "</select>";
-    echo "<input type='submit' value='Mostrar horarios'>";
-    echo "</form>";
+        $cursoId = $row["id"];
+        $cursoNombre = $row["nombre"];
 
-    // Mostrar la tabla con los horarios y aulas del curso seleccionado
-    echo "<br><br>";
+        // Consulta para obtener los horarios vinculados al curso
+        $horariosSql = "SELECT h.dia, h.horaInicio, h.horaFin, h.Aula FROM horario h
+                        INNER JOIN cursohorario ch ON h.id = ch.idHorario
+                        WHERE ch.idCurso = $cursoId";
 
-    if (isset($_POST['curso'])) {
-        $curso_seleccionado = $_POST['curso'];
+        $horariosResult = $conn->query($horariosSql);
 
-        $sql = "SELECT DISTINCT horario.dia, horario.hora_inicio, horario.hora_fin, cursos.aula
-                FROM horario
-                INNER JOIN horario_curso ON horario.id = horario_curso.horario_id
-                INNER JOIN cursos ON horario_curso.curso_id = cursos.id
-                WHERE cursos.id = $curso_seleccionado";
+        while ($horarioRow = $horariosResult->fetch_assoc()) {
+            $horarioDia = $horarioRow["dia"];
+            $horarioInicio = $horarioRow["horaInicio"];
+            $horarioFin = $horarioRow["horaFin"];
+            $Aulas = $horarioRow["Aula"];
 
-        $result = $conn->query($sql);
-
-        if ($result->num_rows > 0) {
-            echo "<table>
-                    <tr>
-                        <th>Día</th>
-                        <th>Hora de inicio</th>
-                        <th>Hora de fin</th>
-                        <th>Aula</th>
-                    </tr>";
-
-            while ($row = $result->fetch_assoc()) {
-                $dia = $row['dia'];
-                $hora_inicio = $row['hora_inicio'];
-                $hora_fin = $row['hora_fin'];
-                $aula = $row['aula'];
-
-                echo "<tr>
-                        <td>$dia</td>
-                        <td>$hora_inicio</td>
-                        <td>$hora_fin</td>
-                        <td>$aula</td>
-                    </tr>";
-            }
-
-            echo "</table>";
-        } else {
-            echo "No hay horarios disponibles para este curso.";
+            echo "<tr>
+                    <td>$cursoNombre</td>
+                    <td>$horarioDia</td>
+                    <td>$horarioInicio</td>
+                    <td>$horarioFin</td>
+                    <td>$Aulas</td>
+                </tr>";
         }
     }
 
-    // Cerrar la conexión a la base de datos
-    $conn->close();
-    ?>
+    echo "</table>";
+} else {
+    echo "No se encontraron cursos vinculados al docente.";
+}
 
-</body>
-</html>
+$conn->close();
+?>
