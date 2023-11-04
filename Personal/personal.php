@@ -1,3 +1,4 @@
+
 <?php
 // Establecer la conexión a la base de datos
 require '../conexion.php';
@@ -11,7 +12,7 @@ if ($conexion->connect_errno) {
 
 <html lang="es">
     <head>
-    <a href="../index.php">Cerrar Sesion</a>
+    <a href="../index2.php">Cerrar Sesion</a>
 	<form method="post" action="personal.php">
         <title>Filtro de pagos</title>
         <meta charset="utf-8">
@@ -21,7 +22,7 @@ if ($conexion->connect_errno) {
         <header>
         </header>
             <a href="totalAlumnos.php">Alumnos</a>
-            <a href="cursosHorarios.php">Cursos</a>
-            <a href="totalPagos.php">Cuotas</a>
+            <a href="CuHo.php">Cursos</a>
+            <a href="Cuotas/IntermedioCuota.php">Cuotas</a>
     </body>
 </html>

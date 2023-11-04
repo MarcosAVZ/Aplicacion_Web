@@ -1,66 +1,161 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Listado de Alumnos</title>
-</head>
-<body>
+<a href="personal.php">Volver</a>
 <?php
+
 // Conexión a la base de datos
 require '../conexion.php';
-$conn = conectar();
 
-// Consulta para obtener todos los alumnos
-$query = "SELECT nombre, DNI, correo, legajo FROM alumnos";
+$conexion = conectar();
 
-// Filtrar por legajo si existe el parámetro
-if (isset($_GET['legajo'])) {
-  $legajo = $_GET['legajo'];
-  $query .= " WHERE legajo LIKE '%$legajo%'";
+// Función para buscar todos los alumnos
+function buscarTodosAlumnos($conexion) {
+
+  // Query para buscar todos los alumnos
+  $queryAlumnos = "
+  SELECT  
+    a.id,
+    a.legajo,
+    a.correo AS correo_alumno,  
+    a.nombre,
+    p.nombre AS nombre_padre,
+    p.correo AS correo_padre
+  FROM
+    alumno a
+  INNER JOIN  
+    padre p ON a.idPadre = p.id
+";
+
+  // Ejecutar query
+  $resultado = mysqli_query($conexion, $queryAlumnos);
+
+  // Retornar resultado
+  return $resultado;
+
 }
 
-$result = $conn->query($query);
+// Función para buscar alumnos por legajo
+function buscarAlumnos($conexion, $legajo) {
+
+  // Query para buscar alumnos por legajo
+  $queryAlumnos = "
+  SELECT  
+    a.id,
+    a.legajo,
+    a.correo AS correo_alumno,  
+    a.nombre,
+    p.nombre AS nombre_padre,
+    p.correo AS correo_padre
+  FROM
+    alumno a
+  INNER JOIN  
+    padre p ON a.idPadre = p.id
+  WHERE
+    a.legajo = '$legajo'  
+";
+
+  // Ejecutar query
+  $resultado = mysqli_query($conexion, $queryAlumnos);
+
+  // Retornar resultado
+  return $resultado;
+}
+
 ?>
 
+<!-- Formulario de búsqueda -->
+<form method="POST">
 
-<a href="personal.php">volver</a>
+  <label>Buscar por legajo:</label>
 
-
-<h1>Listado de Alumnos</h1>
-
-<form method="get">
-  <label>Filtrar por legajo:</label>
   <input type="text" name="legajo">
-  <button type="submit">Filtrar</button>
+
+  <button type="submit">Buscar</button>
+
 </form>
 
-<table>
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>DNI</th>
-      <th>Correo</th>
-      <th>Legajo</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php
-    // Mostrar contenido de la tabla
-    while ($row = $result->fetch_assoc()) {
-      echo "<tr>";
-      echo "<td>" . $row['nombre'] . "</td>";
-      echo "<td>" . $row['DNI'] . "</td>";
-      echo "<td>" . $row['correo'] . "</td>";
-      echo "<td>" . $row['legajo'] . "</td>";
-      echo "</tr>";
-    }
-    ?>
-  </tbody>
-</table>
+<!-- Botón "Mostrar Todos" -->
+<form method="POST">
+  <button type="submit" name="mostrarTodos">Mostrar Todos</button>
+</form>
 
 <?php
-// Cerrar la conexión a la base de datos
-$conn->close();
+
+// Verificar si se envió un legajo
+if(isset($_POST['legajo'])) {
+  // Obtener legajo enviado por POST
+  $legajo = $_POST['legajo'];
+  
+  // Llamar función de búsqueda con filtro por legajo
+  $resultadoAlumnos = buscarAlumnos($conexion, $legajo);
+} elseif (isset($_POST['mostrarTodos'])) {
+  // Llamar función de búsqueda sin filtro por legajo
+  $resultadoAlumnos = buscarTodosAlumnos($conexion);
+} else {
+  // No se envió ningún formulario, mostrar todos los alumnos por defecto
+  $resultadoAlumnos = buscarTodosAlumnos($conexion);
+}
+
+// Verificar si hay resultados
+if(mysqli_num_rows($resultadoAlumnos) > 0) {
 ?>
 
-</body>
-</html>
+<!-- Tabla de resultados -->
+<table border="1">
+
+  <tr>
+
+    <th>Legajo</th>
+    <th>Correo</th>
+    <th>Nombre</th>
+    <th>Nombre Padre</th>
+    <th>Correo Padre</th>
+    <th>Cursos</th>
+
+  </tr>
+
+  <?php
+
+  // Recorrer resultados
+  while($filaAlumno = mysqli_fetch_array($resultadoAlumnos)) {
+
+  ?>
+
+  <tr>
+
+    <td><?php echo $filaAlumno['legajo']; ?></td>
+    <td><?php echo $filaAlumno['correo_alumno']; ?></td>
+    <td><?php echo $filaAlumno['nombre']; ?></td> 
+    <td><?php echo $filaAlumno['nombre_padre']; ?></td>
+    <td><?php echo $filaAlumno['correo_padre']; ?></td>
+
+    <td>
+
+      <?php
+      
+      // Consulta cursos
+      
+      $idAlumno = $filaAlumno['id'];
+
+      $queryCursos = "
+      SELECT c.nombre
+      FROM alumnocurso ac
+      INNER JOIN curso c ON ac.idCurso = c.id
+      WHERE ac.idAlumno = '$idAlumno'
+    ";
+
+      $resultadoCursos = mysqli_query($conexion, $queryCursos);
+
+      while($filaCurso = mysqli_fetch_array($resultadoCursos)) {
+        echo $filaCurso['nombre'].", "; 
+      }
+
+      ?>
+
+      </td>
+  
+    </tr>
+  
+    <?php } ?>
+  
+  </table>
+  
+  <?php } ?>

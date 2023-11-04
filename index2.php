@@ -6,13 +6,13 @@ require_once 'conexion.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // Obtener los datos del formulario
   $correo = $_POST['correo'];
-  $contrasena = $_POST['contrasena'];
+  $contrasena = $_POST['password'];
 
   // Conectar a la base de datos
   $db = conectar();
 
   // Consultar en la tabla 'alumnos'
-  $query = "SELECT * FROM alumnos WHERE correo = '$correo' AND contrasena = '$contrasena'";
+  $query = "SELECT * FROM alumno WHERE correo = '$correo' AND password = '$contrasena'";
   $result = mysqli_query($db, $query);
   $row = mysqli_fetch_assoc($result);
   session_start();
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   // Consultar en la tabla 'docentes'
-  $query = "SELECT * FROM docentes WHERE email = '$correo' AND contrasena = '$contrasena'";
+  $query = "SELECT * FROM docente WHERE correo = '$correo' AND password = '$contrasena'";
   $result = mysqli_query($db, $query);
   $row = mysqli_fetch_assoc($result);
   if ($row) {
@@ -37,28 +37,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   // Consultar en la tabla 'administrador'
-  $query = "SELECT * FROM administrador WHERE correo = '$correo' AND contrasena = '$contrasena'";
-  $result = mysqli_query($db, $query);
-  $row = mysqli_fetch_assoc($result);
-  if ($row) {
+  //$query = "SELECT * FROM administrador WHERE correo = '$correo' AND password = '$contrasena'";
+  //$result = mysqli_query($db, $query);
+  //$row = mysqli_fetch_assoc($result);
+  //if ($row) {
     
     // Redirigir al enlace de administrador
-    header('Location: enlace_administrador.php');
-    exit();
-  }
+  //  header('Location: enlace_administrador.php');
+  //  exit();
+  //}
 
   // Consultar en la tabla 'padre'
-  $query = "SELECT * FROM padre WHERE correo = '$correo' AND contrasena = '$contrasena'";
+  $query = "SELECT * FROM padre WHERE correo = '$correo' AND password = '$contrasena'";
   $result = mysqli_query($db, $query);
   $row = mysqli_fetch_assoc($result);
   if ($row) {
     // Redirigir al enlace de padre
-    header('Location: enlace_padre.php');
+    header('Location: Padre/padre.php');
     exit();
   }
 
   // Consultar en la tabla 'personal'
-  $query = "SELECT * FROM personal WHERE correo = '$correo' AND contrasena = '$contrasena'";
+  $query = "SELECT * FROM personal WHERE correo = '$correo' AND password = '$contrasena'";
   $result = mysqli_query($db, $query);
   $row = mysqli_fetch_assoc($result);
   if ($row) {
@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <form method="POST" action="">
     <input type="text" name="correo" placeholder="Correo electrónico" required><br>
-    <input type="password" name="contrasena" placeholder="Contraseña" required><br>
+    <input type="password" name="password" placeholder="Contraseña" required><br>
     <input type="submit" value="Iniciar sesión">
   </form>
 

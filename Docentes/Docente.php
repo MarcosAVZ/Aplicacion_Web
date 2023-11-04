@@ -1,7 +1,7 @@
 <!DOCTYPE html> 
 <html>
 <head>
-  <a href="../index.php">Cerrar Sesion</a >
+  <a href="../index2.php">Cerrar Sesion</a >
   <title>Área del Docente</title>
 </head>
 <body>
@@ -18,7 +18,7 @@ if (isset($_SESSION['user_id'])) {
 
   // Obtener el nombre del docente de la base de datos
   $db = conectar(); // Asegúrate de tener la conexión a la base de datos establecida
-  $query = "SELECT nombre FROM docentes WHERE id = $docenteId";
+  $query = "SELECT nombre FROM docente WHERE id = $docenteId";
   $result = mysqli_query($db, $query);
   $row = mysqli_fetch_assoc($result);
   $nombreDocente = $row['nombre'];
@@ -37,7 +37,7 @@ if (isset($_SESSION['user_id'])) {
   
   <a href="listaAlumnos.php">Alumnos</a>
   <a href="AulasDesig.php">Aula Designada</a>
-  <a href="Examenes/examenes.php">Examenes</a>
+  <a href="Examen.php">Examenes</a>
   
 </body>
 </html>
