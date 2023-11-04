@@ -23,6 +23,6 @@ if ($conexion->connect_errno) {
         </header>
             <a href="totalAlumnos.php">Alumnos</a>
             <a href="CuHo.php">Cursos</a>
-            <a href="totalPagos.php">Cuotas</a>
+            <a href="Cuotas/IntermedioCuota.php">Cuotas</a>
     </body>
 </html>

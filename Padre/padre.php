@@ -8,14 +8,7 @@
 <?php
 include '../Conexion.php';
 
-// Comenzar la sesión
-session_start();
-
-// Verificar si el usuario está autenticado como docente
-if (isset($_SESSION['user_id'])) {
-  // Obtener el ID del docente de la variable de sesión
-  $padreId = $_SESSION['user_id'];
-
+  $padreId = 1;
   // Obtener el nombre del docente de la base de datos
   $db = conectar(); // Asegúrate de tener la conexión a la base de datos establecida
   $query = "SELECT nombre FROM padre WHERE id = $padreId";
@@ -25,11 +18,11 @@ if (isset($_SESSION['user_id'])) {
 
   // Imprimir el mensaje de bienvenida
   echo "Hola $nombrePadre, bienvenido al Área del Padre.";
-} else {
-  // Si el usuario no está autenticado, redirigir al archivo de inicio de sesión
-  header('Location: index.php');
-  exit();
-}
+   // else {
+      // Si el usuario no está autenticado, redirigir al archivo de inicio de sesión
+    //  header('Location: index.php');
+    //  exit();
+   // }
 ?>
 
 
@@ -37,6 +30,7 @@ if (isset($_SESSION['user_id'])) {
   
   <a href="boletinHijo.php">Boletin</a>
   <a href="horarioHijo.php">Horarios</a>
+  <a href="cuotaPago/IntermedioCuotas.php">Cuotas</a>
   
 </body>
 </html>
