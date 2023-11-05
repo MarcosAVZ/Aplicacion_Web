@@ -108,13 +108,15 @@
                         $dia = $row["dia"];
                         $horaInicio = $row["horaInicio"];
                         $horaFin = $row["horaFin"];
+                        $horaInicioSinSegundos = substr($horaInicio, 0, 5);
+                        $horaFinSinSegundos = substr($horaFin, 0, 5);
 
                         echo "<tr>
                         <td>$nombreCurso</td>
                         <td>$aula</td>
                         <td>$dia</td>
-                        <td>$horaInicio</td>
-                        <td>$horaFin</td>
+                        <td>$horaInicioSinSegundos</td>
+                        <td>$horaFinSinSegundos</td>
                       </tr>";
                     }
 
