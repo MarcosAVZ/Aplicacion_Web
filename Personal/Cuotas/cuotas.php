@@ -104,8 +104,15 @@ mysqli_close($conexion);
                     <li><a class="dropdown-item" href="cursosHorarios.php">Generar Horario</a></li>
                     <li><a class="dropdown-item" href="relacionarCursoHorario.php">Asignar Curso</a></li>
                 </ul>
+                <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Matriculación
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="MatricularAlumno.php">Matricular Alumno</a></li>
+                    <li><a class="dropdown-item" href="MatricularPadre.php">Matricular Padre</a></li>
+                </ul>
             </div>
-            <a href="..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
+            <a href="../../index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
         </div>
     </div>
     <!-- Termina el bloque de código del sidebar -->
