@@ -113,20 +113,6 @@
             ?>
         </table>
 
-        <div id="modal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="cerrarModal()">&times;</span>
-                <h2>Formulario de Pago</h2>
-                <form id="formulario-pago">
-                    <label for="monto">Monto:</label>
-                    <input type="text" id="monto" name="monto" required>
-                    <input type="hidden" id="cuotaId" name="cuotaId" value="">
-                    <input type... <!-- Resto del formulario -->
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- Botón para imprimir tabla -->
     </div>
     <a class="no-print ms-3" type='button' onclick='imprimirTabla()'><img src='../../Css/print.png' width='50px'></a>
