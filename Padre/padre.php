@@ -59,8 +59,80 @@
 
     // Imprimir el mensaje de bienvenida
     echo "<h2>Hola $nombrePadre, bienvenido al Área del Padre.</h2>";
-  ?>
 
+$conn = conectar(); 
+
+// Verificar la conexión
+if ($conn->connect_error) {
+  die("Conexión fallida: " . $conn->connect_error);
+}
+
+// Obtener la fecha actual
+$fechaActual = date("Y-m-d");
+
+// Calcular el mes y año actual en español
+setlocale(LC_TIME, 'es_ES'); // Establecer localización en español
+$mesActual = ucfirst(strftime("%B")); // Nombre completo del mes en español (por ejemplo, "Enero")
+$anoActual = date("Y");
+
+$sqlMontoCuota = "SELECT monto FROM montos_cuota WHERE id = 1";
+$resultMontoCuota = $conn->query($sqlMontoCuota);
+
+if ($resultMontoCuota->num_rows > 0) {
+  $rowMontoCuota = $resultMontoCuota->fetch_assoc();
+  $montoCuota = $rowMontoCuota["monto"];
+} else {
+  $montoCuota = 0.00; // Valor predeterminado si no se encuentra un monto
+}
+
+// Consultar todos los padres
+$sqlPadres = "SELECT id FROM padre";
+$resultPadres = $conn->query($sqlPadres);
+
+if ($resultPadres->num_rows > 0) {
+  while ($rowPadre = $resultPadres->fetch_assoc()) {
+      $idPadre = $rowPadre["id"];
+      
+      // Verificar si ya existe una cuota para este padre en el mes actual
+      $sqlExistente = "SELECT id FROM cuotas WHERE id_padre = $idPadre AND mes = '$mesActual' AND año = $anoActual";
+      $resultExistente = $conn->query($sqlExistente);
+      
+      if ($resultExistente->num_rows == 0) {
+          // Si no existe una cuota para este padre en el mes actual, insertar una nueva cuota
+          $estadoCuota = "pendiente"; // Puedes cambiar el estado inicial
+          
+          // Consultar los alumnos asociados a este padre
+          $sqlAlumnos = "SELECT idAlumno FROM cuotas WHERE id_padre = $idPadre";
+          $resultAlumnos = $conn->query($sqlAlumnos);
+          
+          if ($resultAlumnos->num_rows > 0) {
+              while ($rowAlumno = $resultAlumnos->fetch_assoc()) {
+                  $idAlumno = $rowAlumno["idAlumno"];
+                  
+                  // Verificar si ya existe una cuota para este alumno en el mes actual
+                  $sqlCuotaExistente = "SELECT id FROM cuotas WHERE id_padre = $idPadre AND idAlumno = $idAlumno AND mes = '$mesActual' AND año = $anoActual";
+                  $resultCuotaExistente = $conn->query($sqlCuotaExistente);
+                  
+                  if ($resultCuotaExistente->num_rows == 0) {
+                      $sqlInsert = "INSERT INTO cuotas (id_padre, idAlumno, mes, año, monto, estado) VALUES ($idPadre, $idAlumno, '$mesActual', $anoActual, $montoCuota, '$estadoCuota')";
+                      
+                      if ($conn->query($sqlInsert) === TRUE) {
+                        
+                      } else {
+                          echo "Error al insertar la cuota: " . $conn->error;
+                      }
+                  }
+              }
+          }
+      }
+  }
+} else {
+  echo "No se encontraron padres en la base de datos.";
+}
+
+// Cerrar la conexión a la base de datos
+$conn->close();
+?>
   <div id="footer">
     <img src="../Css/Logotipo200x200.png">
   </div>
@@ -69,3 +141,4 @@
 </body>
 
 </html>
+
