@@ -1,4 +1,5 @@
-<a href="IntermedioCuota.php">Volver</a>
+<!DOCTYPE html>
+<html>
 <?php
 // Establece la conexión a la base de datos (asegúrate de tener configurada la conexión)
 require '../../conexion.php';
@@ -32,14 +33,12 @@ if (!empty($estadoFiltro)) {
 }
 
 if (!empty($legajoFiltro)) {
-    $sql .= " AND alumno.legajo LIKE '%$legajoFiltro%'";
-}elseif (!empty($estadoFiltro)) {
-$sql .= " WHERE cuotas.estado = '$estadoFiltro'";
-if (!empty($legajoFiltro)) {
-    $sql .= " AND alumno.legajo LIKE '%$legajoFiltro%'";
+    if (!empty($mesFiltro) || !empty($estadoFiltro)) {
+        $sql .= " AND alumno.legajo LIKE '%$legajoFiltro%'";
+    } else {
+        $sql .= " WHERE alumno.legajo LIKE '%$legajoFiltro%'";
+    }
 }
-}
-
 
 $resultado = mysqli_query($conexion, $sql);
 
@@ -58,52 +57,110 @@ if ($resultado) {
 mysqli_close($conexion);
 ?>
 
-<!DOCTYPE html>
-<html>
+
 <head>
-    <title>Tabla de Cuotas</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../Css/styles.css">
+    <title>Estado Pagos</title>
 </head>
+
 <body>
-    <h1>Tabla de Cuotas</h1>
+    <!-- Código para la barra lateral -->
+    <header class="header no-print">
+        <!-- Cambiar título para que corresponda a la página -->
+        <a type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+            <img src="../../Css/hamburguesa.png" width="50px">
+        </a>
+        <h1 style="text-align: center; color: #05429f">Estado Pagos</h1>
+    </header>
 
-    <form method="get">
-        <label for="mes">Filtrar por Mes:</label>
-        <input type="text" name="mes" id="mes" value="<?= $mesFiltro ?>">
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Secciones</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div>
+                <img src="../../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
+            </div>
+            <div class="list-group">
+                <a href="../personal.php" class="list-group-item list-group-item-action">Página Principal</a>
+                <a href="../totalAlumnos.php" class="list-group-item list-group-item-action">Alumnos</a>
+                <a class="dropdown-toggle list-group-item list-group-item-action active" aria-current="true" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Pagos
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="Pagos.php">Lista Pagos</a></li>
+                    <li><a class="dropdown-item" href="cuotas.php">Estado Pagos</a></li>
+                </ul>
+                <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Cursos y Horarios
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="cursosHorarios.php">Generar Horario</a></li>
+                    <li><a class="dropdown-item" href="relacionarCursoHorario.php">Asignar Curso</a></li>
+                </ul>
+            </div>
+            <a href="..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
+        </div>
+    </div>
+    <!-- Termina el bloque de código del sidebar -->
+    <div class="mt-2 ms-2">
+        <form method="get">
+            <div class="form-inline">
+                <label class="h5 ms-2" for="mes">Filtrar por Mes:</label>
+                <input class="form-control ms-1" style="max-width: 150px;" type="text" name="mes" id="mes" value="<?= $mesFiltro ?>">
 
-        <label for="estado">Filtrar por Estado:</label>
-        <select name="estado" id="estado">
-            <option value="">Todos</option>
-            <option value="pendiente" <?= ($estadoFiltro == 'pendiente') ? 'selected' : '' ?>>Pendiente</option>
-            <option value="pagado" <?= ($estadoFiltro == 'pagado') ? 'selected' : '' ?>>Pagado</option>
-        </select>
+                <label class="h5 ms-2" for="estado">Filtrar por Estado:</label>
+                <select class="form-select ms-1" style="max-width: 150px;" name="estado" id="estado">
+                    <option value="">Todos</option>
+                    <option value="pendiente" <?= ($estadoFiltro == 'pendiente') ? 'selected' : '' ?>>Pendiente</option>
+                    <option value="pagado" <?= ($estadoFiltro == 'pagado') ? 'selected' : '' ?>>Pagado</option>
+                </select>
 
-        <label for="legajo">Filtrar por Legajo:</label>
-        <input type="text" name="legajo" id="legajo" value="<?= $legajoFiltro ?>">
+                <label class="h5 ms-2" for="legajo">Filtrar por Legajo:</label>
+                <input class="form-control ms-1" style="max-width: 150px;" type="text" name="legajo" id="legajo" value="<?= $legajoFiltro ?>">
 
-        <input type="submit" value="Filtrar">
-    </form>
-
-    <table border="1">
-        <thead>
-            <tr>
+                <input class="btn btn-primary ms-1 no-print" type="submit" value="Filtrar">
+            </div>
+        </form>
+    </div>
+    <div class="mt-2 mx-auto p-2" style="width: 90vw">
+        <table class="table table-striped table-bordered">
+            <tr class="table-info">
                 <th>Mes</th>
                 <th>Nombre del Alumno</th>
                 <th>Legajo del Alumno</th>
                 <th>Monto de la Cuota</th>
                 <th>Estado</th>
             </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($cuotas as $cuota): ?>
-                <tr>
-                    <td><?= $cuota['mes'] ?></td>
-                    <td><?= $cuota['nombre'] ?></td>
-                    <td><?= $cuota['legajo'] ?></td>
-                    <td><?= $cuota['monto'] ?></td>
-                    <td><?= $cuota['estado'] ?></td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            <tbody>
+                <?php foreach ($cuotas as $cuota) : ?>
+                    <tr>
+                        <td><?= $cuota['mes'] ?></td>
+                        <td><?= $cuota['nombre'] ?></td>
+                        <td><?= $cuota['legajo'] ?></td>
+                        <td><?= $cuota['monto'] ?></td>
+                        <td><?= $cuota['estado'] ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <!-- Botón para imprimir tabla -->
+        <a class="no-print ms-3" type='button' onclick='imprimirTabla()'><img src='../../Css/print.png' width='50px'></a>
+    </div>
+    <div id="footer">
+        <img src="../../Css/Logotipo200x200.png">
+    </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<!-- Script para imprimir la tabla -->
+<script>
+    function imprimirTabla() {
+        window.print();
+    }
+</script>
+
 </html>
