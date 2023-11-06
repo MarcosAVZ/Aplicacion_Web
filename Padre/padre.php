@@ -32,6 +32,13 @@
         <a href="padre.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
         <a href="horarioHijo.php" class="list-group-item list-group-item-action">Horarios</a>
         <a href="boletinHijo.php" class="list-group-item list-group-item-action">Boletín</a>
+        <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Pagos
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="cuotaPago/cuotasPagadas.php">Cuotas Pagadas</a></li>
+          <li><a class="dropdown-item" href="cuotaPago/pagar_cuota.php">Cuotas Pendientes</a></li>
+        </ul>
       </div>
       <a href="..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
     </div>

@@ -31,7 +31,13 @@
       <div class="list-group">
         <a href="personal.php" class="list-group-item list-group-item-action">Página Principal</a>
         <a href="totalAlumnos.php" class="list-group-item list-group-item-action">Alumnos</a>
-        <a href="totalPagos.php" class="list-group-item list-group-item-action">Cuotas</a>
+        <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Pagos
+        </a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="cuotas/Pagos.php">Lista Pagos</a></li>
+          <li><a class="dropdown-item" href="Cuotas/cuotas.php">Estado Pagos</a></li>
+        </ul>
         <a class="dropdown-toggle list-group-item list-group-item-action active" aria-current="true" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           Cursos y Horarios
         </a>
@@ -44,6 +50,7 @@
     </div>
   </div>
   <!-- Termina el bloque de código del sidebar -->
+
   <div class="card form-container mx-auto p-2 mt-3" style="width: 500px">
     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
       <h5 class="formlabel" for="dia">Día:</h5>
@@ -86,9 +93,11 @@
     $horaInicio = $_POST["horaInicio"];
     $horaFin = $_POST["horaFin"];
     $Aula = $_POST["Aula"];
+    $horaInicioSinSegundos = substr($horaInicio, 0, 5);
+    $horaFinSinSegundos = substr($horaFin, 0, 5);
 
     // Consulta para insertar los datos en la tabla de horarios
-    $sql = "INSERT INTO horario (dia, horaInicio, horaFin, Aula) VALUES ('$dia', '$horaInicio', '$horaFin', '$Aula')";
+    $sql = "INSERT INTO horario (dia, horaInicio, horaFin, Aula) VALUES ('$dia', '$horaInicioSinSegundos', '$horaFinSinSegundos', '$Aula')";
 
     if ($conn->query($sql) === TRUE) {
       echo "<p>Horario guardado exitosamente</p>";
@@ -105,4 +114,5 @@
   </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
 </html>

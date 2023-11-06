@@ -42,7 +42,13 @@ if ($conexion->connect_errno) {
             <div class="list-group">
                 <a href="personal.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
                 <a href="totalAlumnos.php" class="list-group-item list-group-item-action">Alumnos</a>
-                <a href="totalPagos.php" class="list-group-item list-group-item-action">Cuotas</a>
+                <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Pagos
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="cuotas/Pagos.php">Lista Pagos</a></li>
+                    <li><a class="dropdown-item" href="Cuotas/cuotas.php">Estado Pagos</a></li>
+                </ul>
                 <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Cursos y Horarios
                 </a>

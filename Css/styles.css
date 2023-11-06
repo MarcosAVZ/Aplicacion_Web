@@ -30,10 +30,12 @@ body {
 }
 
 /* Específicos para páginas con planillas */
+
 .max-width-input {
   max-width: 300px;
   width: 100%;
 }
+
 
 @media print {
 
@@ -60,3 +62,44 @@ body {
   padding: 20px;
   border-radius: 10px;
 }
+
+/* The alert message box */
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  /* Red */
+  color: white;
+  margin-bottom: 15px;
+}
+
+.alert-success {
+  padding: 20px;
+  background-color: #06754c;
+  /* Red */
+  color: white;
+  margin-bottom: 15px;
+}
+
+/* The close button */
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+}
+
+/*
+<div class=\"alert mx-auto\" style=\"width: 500px\">
+                <span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span>
+                Error al subir el archivo del comprobante.
+              </div>";
+              */
