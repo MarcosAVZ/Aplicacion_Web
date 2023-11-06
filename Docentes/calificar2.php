@@ -90,28 +90,32 @@
   }
 
   // Obtener alumnos vinculados al curso seleccionado
-  if (isset($_POST['curso'])) {
-    $cursoId = $_POST['curso'];
-    $sqlAlumnos = "SELECT a.id, a.nombre
-                       FROM alumno AS a
-                       JOIN alumnocurso AS ac ON a.id = ac.idAlumno
-                       WHERE ac.idCurso = $cursoId";
-    $resultAlumnos = $conn->query($sqlAlumnos);
-  }
-
-  // Guardar los datos en la tabla examenalumno
   if (isset($_POST['submit_examenalumno'])) {
     $alumnoId = $_POST['alumno'];
     $examenId = $_POST['examen'];
     $nota = $_POST['nota'];
-
-    // Consulta SQL para insertar los datos en la tabla examenalumno
-    $insertQuery = "INSERT INTO examenalumno (idAlumno, idExamen, nota) VALUES ($alumnoId, $examenId, $nota)";
-
-    if ($conn->query($insertQuery) === TRUE) {
-      echo "Los datos se guardaron correctamente en la tabla examenalumno.";
+  
+    // Consulta SQL con consulta preparada
+    $insertQuery = "INSERT INTO examenalumno (idAlumno, idExamen, nota) VALUES (?, ?, ?)";
+  
+    // Preparar la consulta
+    $stmt = $conn->prepare($insertQuery);
+  
+    if ($stmt) {
+      // Vincular parámetros
+      $stmt->bind_param("iii", $alumnoId, $examenId, $nota);
+  
+      // Ejecutar la consulta preparada
+      if ($stmt->execute()) {
+        echo "Los datos se guardaron correctamente en la tabla examenalumno.";
+      } else {
+        echo "Error al guardar los datos: " . $stmt->error;
+      }
+  
+      // Cerrar la consulta preparada
+      $stmt->close();
     } else {
-      echo "Error al guardar los datos: " . $conn->error;
+      echo "Error al preparar la consulta: " . $conn->error;
     }
   }
   ?>

@@ -85,8 +85,8 @@
                 $horarioInicio = $horarioRow["horaInicio"];
                 $horarioFin = $horarioRow["horaFin"];
                 $Aulas = $horarioRow["Aula"];
-                $horaInicioSinSegundos = substr($horaInicio, 0, 5);
-                $horaFinSinSegundos = substr($horaFin, 0, 5);
+                $horaInicioSinSegundos = substr($horarioInicio, 0, 5);
+$horaFinSinSegundos = substr($horarioFin, 0, 5);
 
                 echo "<tr>
                     <td>$cursoNombre</td>
