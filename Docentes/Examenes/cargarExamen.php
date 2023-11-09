@@ -36,19 +36,5 @@
         $conn->close();
     }
     ?>
-
-    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-        <label for="materia">Seleccione una materia:</label>
-        <select name="materia" id="materia">
-            <option value="1">Matemáticas</option>
-            <option value="2">Historia</option>
-            <option value="3">Ciencias</option>
-        </select>
-        <br><br>
-        <label for="nombreExamen">Nombre del examen:</label>
-        <input type="text" name="nombreExamen" id="nombreExamen" required>
-        <br><br>
-        <input type="submit" value="Agregar Examen">
-    </form>
 </body>
 </html>

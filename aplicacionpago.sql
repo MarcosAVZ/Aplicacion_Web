@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-11-2023 a las 17:58:55
+-- Tiempo de generación: 06-11-2023 a las 20:08:33
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -64,9 +64,52 @@ CREATE TABLE `alumnocurso` (
 INSERT INTO `alumnocurso` (`idAlumno`, `idCurso`) VALUES
 (1, 1),
 (1, 2),
+(1, 3),
 (2, 1),
 (2, 2),
 (3, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `comentarios`
+--
+
+CREATE TABLE `comentarios` (
+  `id` int(11) NOT NULL,
+  `nombre_usuario` varchar(255) DEFAULT NULL,
+  `comentario` text NOT NULL,
+  `puntuacion` int(11) NOT NULL,
+  `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Volcado de datos para la tabla `comentarios`
+--
+
+INSERT INTO `comentarios` (`id`, `nombre_usuario`, `comentario`, `puntuacion`, `fecha_creacion`) VALUES
+(1, 'Anónimo', 'sdads', 1, '2023-09-25 16:24:50'),
+(2, 'Anónimo', 'Buenas', 3, '2023-09-25 16:24:58'),
+(3, 'Anónimo', 'Buenas', 3, '2023-09-25 16:26:40'),
+(4, 'Anónimo', 'Buenass', 5, '2023-09-25 16:26:54'),
+(5, 'Anónimo', 'Buenass', 3, '2023-09-25 16:28:00'),
+(6, 'Anónimo', 'Hola comentario', 4, '2023-09-25 22:05:19'),
+(7, 'Anónimo', 'Hola comentario', 4, '2023-09-25 22:05:21'),
+(8, 'Anónimo', 'Hola comentario', 4, '2023-09-25 22:05:22'),
+(9, 'Anónimo', 'Hola comentario', 4, '2023-09-25 22:05:25'),
+(10, 'Anónimo', 'Hola comentario', 4, '2023-09-25 22:06:15'),
+(11, 'Anónimo', 'Hola', 5, '2023-11-06 18:30:54'),
+(12, 'Anónimo', 'Hola', 5, '2023-11-06 18:37:39'),
+(13, 'Anónimo', 'dadsadsa', 1, '2023-11-06 18:39:17'),
+(14, 'Anónimo', 'dadsadsa', 1, '2023-11-06 18:44:22'),
+(15, 'Anónimo', 'Paapaa', 3, '2023-11-06 18:44:35'),
+(16, 'Anónimo', 'Paapaa', 3, '2023-11-06 18:47:39'),
+(17, 'Anónimo', 'asdasda', 2, '2023-11-06 18:47:55'),
+(18, 'Padre 1', 'asdasda', 2, '2023-11-06 18:49:41'),
+(19, 'Padre 1', 'asdasda', 2, '2023-11-06 18:52:32'),
+(20, 'Padre 1', 'asdadsa', 1, '2023-11-06 18:52:43'),
+(21, 'Anónimo', 'asdadsad', 3, '2023-11-06 18:56:28'),
+(22, 'Padre 1', 'adsada', 3, '2023-11-06 18:56:46');
 
 -- --------------------------------------------------------
 
@@ -78,7 +121,7 @@ CREATE TABLE `cuotas` (
   `id` int(11) NOT NULL,
   `id_padre` int(11) DEFAULT NULL,
   `idAlumno` int(11) DEFAULT NULL,
-  `mes` int(11) DEFAULT NULL,
+  `mes` varchar(15) DEFAULT NULL,
   `año` int(11) DEFAULT NULL,
   `monto` decimal(10,2) DEFAULT NULL,
   `estado` enum('pendiente','pagado') DEFAULT NULL
@@ -89,11 +132,13 @@ CREATE TABLE `cuotas` (
 --
 
 INSERT INTO `cuotas` (`id`, `id_padre`, `idAlumno`, `mes`, `año`, `monto`, `estado`) VALUES
-(1, 1, 1, 11, 2023, 100.00, 'pagado'),
-(2, 1, 1, 12, 2023, 150.00, 'pagado'),
-(3, 1, 2, 1, 2024, 100.00, 'pagado'),
-(4, 1, 1, 2, 2024, 200.00, 'pendiente'),
-(5, 1, 2, 3, 2024, 300.00, 'pendiente');
+(1, 1, 1, 'Enero', 2023, 100.00, 'pagado'),
+(2, 1, 1, 'Febrero', 2023, 150.00, 'pagado'),
+(3, 1, 2, 'Marzo', 2024, 100.00, 'pagado'),
+(4, 1, 1, 'Abril', 2024, 200.00, 'pagado'),
+(5, 1, 2, 'Mayo', 2024, 300.00, 'pendiente'),
+(38, 1, 1, 'November', 2023, 10000.00, 'pendiente'),
+(39, 1, 2, 'November', 2023, 10000.00, 'pendiente');
 
 -- --------------------------------------------------------
 
@@ -152,7 +197,8 @@ CREATE TABLE `cursohorario` (
 INSERT INTO `cursohorario` (`idCurso`, `idHorario`) VALUES
 (1, 1),
 (2, 2),
-(2, 20);
+(3, 20),
+(3, 23);
 
 -- --------------------------------------------------------
 
@@ -220,6 +266,7 @@ INSERT INTO `examen` (`id`, `nombre`, `idCurso`, `idDocente`) VALUES
 --
 
 CREATE TABLE `examenalumno` (
+  `id` int(11) NOT NULL,
   `idAlumno` int(11) NOT NULL,
   `idExamen` int(11) NOT NULL,
   `nota` double NOT NULL
@@ -229,11 +276,12 @@ CREATE TABLE `examenalumno` (
 -- Volcado de datos para la tabla `examenalumno`
 --
 
-INSERT INTO `examenalumno` (`idAlumno`, `idExamen`, `nota`) VALUES
-(1, 1, 6),
-(1, 4, 6),
-(2, 3, 9),
-(3, 5, 7);
+INSERT INTO `examenalumno` (`id`, `idAlumno`, `idExamen`, `nota`) VALUES
+(1, 1, 1, 6),
+(2, 1, 4, 6),
+(3, 2, 3, 9),
+(4, 3, 5, 7),
+(5, 1, 1, 10);
 
 -- --------------------------------------------------------
 
@@ -258,7 +306,52 @@ INSERT INTO `horario` (`id`, `dia`, `horaInicio`, `horaFin`, `Aula`) VALUES
 (2, 'Martes', '10:00:00', '11:30:00', 'Aula2'),
 (3, 'Jueves', '13:00:00', '14:30:00', 'Aula1'),
 (20, 'lunes', '16:45:00', '18:45:00', '5,2'),
-(21, 'Martes', '16:45:00', '18:45:00', '5,2');
+(21, 'Martes', '16:45:00', '18:45:00', '5,2'),
+(22, 'lunes', '00:00:00', '00:00:00', ''),
+(23, 'martes', '15:00:00', '17:00:00', '2,11');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `montos_cuota`
+--
+
+CREATE TABLE `montos_cuota` (
+  `id` int(11) NOT NULL,
+  `monto` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `montos_cuota`
+--
+
+INSERT INTO `montos_cuota` (`id`, `monto`) VALUES
+(1, 10000.00);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `noticias`
+--
+
+CREATE TABLE `noticias` (
+  `id` int(11) NOT NULL,
+  `titulo` varchar(255) NOT NULL,
+  `contenido` text NOT NULL,
+  `fecha` datetime DEFAULT NULL,
+  `imagen` longblob DEFAULT NULL,
+  `tipo_imagen` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `noticias`
+--
+
+INSERT INTO `noticias` (`id`, `titulo`, `contenido`, `fecha`, `imagen`, `tipo_imagen`) VALUES
+(2, 'La Institución Implementa Programa de Educación Ambiental', 'Estamos dando un paso adelante en la promoción de la conciencia ambiental entre nuestros estudiantes al lanzar un nuevo programa de educación ambiental destinado a inspirar la conservación y la sostenibilidad', '2023-09-23 00:00:00', NULL, NULL),
+(3, 'La Institucion Fomenta la Creatividad de sus Estudiantes', 'Educar Para Transformar está comprometida con el desarrollo integral de sus estudiantes y, este año, ha implementado una serie de iniciativas para fomentar la creatividad y la innovación en el aula.', '2023-09-21 00:00:00', NULL, NULL),
+(4, 'Celebración de la Primavera en \'EDUCAR PARA TRANSFORMAR\': Día del Estudiante lleno de flores Rojas y hermosas', 'La llegada de la primavera trajo consigo una explosión de alegría y color en el Centro Educativo \"EDUCAR PARA TRANSFORMAR\". Como parte de la tradición arraigada en la institución, el Día del Estudiante se celebra con regalos de flores amarillas. <br /><br />\r\nEl evento culminó con un emotivo acto en el que se destacaron los logros académicos y extracurriculares de los estudiantes. Además, se reconoció a aquellos que habían contribuido de manera significativa al ambiente positivo y colaborativo de la institución.', NULL, NULL, NULL),
+(5, 'Noticia prueba', 'Esta es una simple noticia', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -281,7 +374,8 @@ CREATE TABLE `padre` (
 INSERT INTO `padre` (`id`, `correo`, `password`, `legajo`, `nombre`) VALUES
 (1, 'padre1@mail.com', '1234', 123, 'Padre 1'),
 (2, 'padre2@mail.com', '5678', 456, 'Padre 2'),
-(3, 'padre3@mail.com', '9012', 789, 'Padre 3');
+(3, 'padre3@mail.com', '9012', 789, 'Padre 3'),
+(4, 'padre@email.com', 'padre@email.com', 1234, 'Mauro Peralta');
 
 -- --------------------------------------------------------
 
@@ -313,7 +407,8 @@ INSERT INTO `pago` (`id`, `montoPago`, `fecha`, `idCuota`, `nroComprobante`, `co
 (7, 50.00, '2023-11-04', 2, 2147483647, 0x7061676f2e73716c, ''),
 (8, 50.00, '2023-11-04', 4, 2147483647, 0x7061676f2e73716c, ''),
 (9, 50.00, '2023-11-04', 4, 2147483647, 0x7061676f2e73716c, 'Efectivo'),
-(10, 50.00, '2023-11-04', 4, 2147483647, 0x6e6f746120646520736f6c696369747564206465206c6963656e6369612031305f2d30342e706466, 'Efectivo');
+(10, 50.00, '2023-11-04', 4, 2147483647, 0x6e6f746120646520736f6c696369747564206465206c6963656e6369612031305f2d30342e706466, 'Efectivo'),
+(11, 50.00, '2023-11-06', 4, 2147483647, 0x68746163636573732e747874, 'Crédito');
 
 -- --------------------------------------------------------
 
@@ -639,6 +734,12 @@ ALTER TABLE `alumnocurso`
   ADD KEY `idCurso` (`idCurso`);
 
 --
+-- Indices de la tabla `comentarios`
+--
+ALTER TABLE `comentarios`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `cuotas`
 --
 ALTER TABLE `cuotas`
@@ -691,13 +792,25 @@ ALTER TABLE `examen`
 -- Indices de la tabla `examenalumno`
 --
 ALTER TABLE `examenalumno`
-  ADD PRIMARY KEY (`idAlumno`,`idExamen`),
+  ADD PRIMARY KEY (`id`),
   ADD KEY `idExamen` (`idExamen`);
 
 --
 -- Indices de la tabla `horario`
 --
 ALTER TABLE `horario`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `montos_cuota`
+--
+ALTER TABLE `montos_cuota`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `noticias`
+--
+ALTER TABLE `noticias`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -850,10 +963,16 @@ ALTER TABLE `alumno`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT de la tabla `comentarios`
+--
+ALTER TABLE `comentarios`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
 -- AUTO_INCREMENT de la tabla `cuotas`
 --
 ALTER TABLE `cuotas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT de la tabla `curso`
@@ -874,22 +993,40 @@ ALTER TABLE `examen`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT de la tabla `examenalumno`
+--
+ALTER TABLE `examenalumno`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT de la tabla `horario`
 --
 ALTER TABLE `horario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT de la tabla `montos_cuota`
+--
+ALTER TABLE `montos_cuota`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `noticias`
+--
+ALTER TABLE `noticias`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `padre`
 --
 ALTER TABLE `padre`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `pago`
 --
 ALTER TABLE `pago`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `personal`

@@ -29,7 +29,18 @@
                 <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
             </div>
             <div class="list-group">
-                <a href="padre.php" class="list-group-item list-group-item-action">Página Principal</a>
+            <?php
+             session_start();
+                if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
+                ?>
+                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php  
+                }else{
+                ?>
+                <a href="padre.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php 
+                }
+            ?>
                 <a href="horarioHijo.php" class="list-group-item list-group-item-action active" aria-current="true">Horarios</a>
                 <a href="boletinHijo.php" class="list-group-item list-group-item-action">Boletín</a>
                 <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -48,17 +59,21 @@
     <div class="mx-auto p-2" style="width: 90vw">
         <?php
         // Conexión a la base de datos
-        require '../conexion.php';
+        include '../Conexion.php';
         $conn = conectar();
-
-        // Obtener el ID del padre (puedes obtenerlo mediante un formulario o cualquier otro método)
-        $idPadre = 1; // ID del padre (debes reemplazarlo por el valor correspondiente)
+        if (isset($_SESSION['user_id'])) {
+         $idPadre = $_SESSION['user_id'];
 
         // Consulta para obtener los alumnos relacionados con el padre
         $sqlAlumnos = "SELECT id, nombre FROM alumno WHERE idPadre = $idPadre";
 
         $resultAlumnos = $conn->query($sqlAlumnos);
 
+        } else {
+        // Si no se ha iniciado sesión, puedes redirigir al usuario a la página de inicio de sesión
+        header('Location: padre.php');
+        exit();
+        }
         // Verificar si se encontraron resultados
         if ($resultAlumnos->num_rows > 0) {
             // Mostrar la tabla de horarios para los alumnos encontrados

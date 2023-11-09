@@ -28,7 +28,18 @@
                 <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
             </div>
             <div class="list-group">
-                <a href="Docente.php" class="list-group-item list-group-item-action ">Página Principal</a>
+            <?php  
+                session_start();
+                if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
+                ?>
+                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php  
+                }else{
+                ?>
+                <a href="Docente.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php 
+                }
+            ?>
                 <a href="listaAlumnos.php" class="list-group-item list-group-item-action">Alumnos</a>
                 <a href="AulasDesig.php" class="list-group-item list-group-item-action active" aria-current="true">Aula Designada</a>
                 <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -47,9 +58,12 @@
     // Conexión a la base de datos
     require '../conexion.php';
     $conn = conectar();
+    
 
-    // ID del docente (conocido de antemano)
-    $docenteId = 1;
+    // Verificar si el docente ha iniciado sesión
+    if (isset($_SESSION['user_id'])) {
+        // Obtener el ID del docente de la variable de sesión
+        $docenteId = $_SESSION['user_id'];
 
     // Consulta para obtener los cursos vinculados al docente
     $sql = "SELECT c.id, c.nombre FROM curso c
@@ -57,7 +71,11 @@
         WHERE cd.idDocente = $docenteId";
 
     $result = $conn->query($sql);
-
+    } else {
+    // Si el usuario no está autenticado, redirigir al archivo de inicio de sesión
+    header('Location: Docente.php');
+    exit();
+     }
     if ($result->num_rows > 0) {
         // Mostrar los cursos y sus horarios en forma de tabla
         echo "<table class='table table-striped table-bordered mx-auto p-2 mt-3' style='width: 90vw'>

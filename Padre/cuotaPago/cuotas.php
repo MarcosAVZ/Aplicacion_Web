@@ -6,23 +6,52 @@
 <body>
     <a href="../padre.php">Volver</a>
     <h1>Cuotas Mensuales</h1>
+    <form method="post">
+        <label for="estado">Filtrar por estado:</label>
+        <select name="estado" id="estado">
+            <option value="">Todos</option>
+            <option value="pendiente">Pendiente</option>
+            <option value="pagado">Pagado</option>
+        </select>
+        <input type="submit" value="Filtrar">
+    </form>
 <?php
-
+session_start();
     // Supongamos que $id_padre contiene el ID del padre actual
     require '../../conexion.php';
 
     $conexion = conectar();
-    $id_padre = 1;
+    if (isset($_SESSION['user_id'])) {
+        $id_adre = $_SESSION['user_id'];
+
     // Verifica la conexión
     if (!$conexion) {
         die("La conexión a la base de datos falló: " . mysqli_connect_error());
     }
 
+    // Inicializa la variable de estado
+    $estado_seleccionado = '';
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["estado"])) {
+        // Obtiene el estado seleccionado desde el formulario
+        $estado_seleccionado = $_POST["estado"];
+    }
+
     // Consulta SQL para obtener las cuotas del padre actual
     $sql = "SELECT mes, año, monto, estado FROM cuotas WHERE id_padre = $id_padre";
 
+    // Agrega una cláusula WHERE solo si se ha seleccionado un estado
+    if (!empty($estado_seleccionado)) {
+        $sql .= " AND estado = '$estado_seleccionado'";
+    }
+
     $resultado = mysqli_query($conexion, $sql);
 
+    } else {
+    // Si no se ha iniciado sesión, puedes redirigir al usuario a la página de inicio de sesión
+    header('Location: padre.php');
+    exit();
+    }
     if (mysqli_num_rows($resultado) > 0) {
         // Muestra los resultados en una tabla
         echo "<table>
@@ -53,25 +82,3 @@
 
 </body>
 </html>
-Crea un archivo PHP ("pagar_cuota.php") para procesar el pago de una cuota:
-php
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $cuota_id = $_POST["cuota_id"];
-    
-    // Aquí debes realizar la lógica para marcar la cuota como "pagada" en la base de datos.
-    
-    // Ejemplo de actualización simple (no seguro):
-    // Actualiza el estado de la cuota en la base de datos a "pagado".
-    
-    // Redirige de nuevo a la página de cuotas después de realizar el pago.
-    header("Location: cuotas.php");
-    exit();
-}
-?>
-Este es un ejemplo básico para la interfaz de usuario. Debes adaptarlo y mejorar la seguridad según tus necesidades específicas. Además, debes agregar la lógica de validación de inicio de sesión y de pago que interactúe con tu base de datos.
-
-
-
-
-

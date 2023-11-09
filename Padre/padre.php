@@ -18,7 +18,9 @@
     </a>
     <h1 style="text-align: center; color: #05429f">Sistema de Gestión de Educar para Transformar</h1>
   </header>
-
+  <?php
+  session_start();
+?>
   <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasExampleLabel">Secciones</h5>
@@ -29,9 +31,20 @@
         <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
       </div>
       <div class="list-group">
+        <?php
+        if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
+        ?>
+        <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+        <?php  
+        }else{
+          ?>
         <a href="padre.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+        <?php 
+        }
+        ?>
         <a href="horarioHijo.php" class="list-group-item list-group-item-action">Horarios</a>
         <a href="boletinHijo.php" class="list-group-item list-group-item-action">Boletín</a>
+        <a href="PassPadre.php" class="list-group-item list-group-item-action">Cambiar Contraseña</a>
         <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           Pagos
         </a>
@@ -46,20 +59,26 @@
   <!-- Termina el bloque de código del sidebar -->
 
   <?php
+  
   include '../Conexion.php';
 
-  $padreId = 1;
+  if (isset($_SESSION['user_id'])) {
+    $padreId = $_SESSION['user_id'];
 
-  // Obtener el nombre del docente de la base de datos
-  $db = conectar(); // Asegúrate de tener la conexión a la base de datos establecida
-  $query = "SELECT nombre FROM padre WHERE id = $padreId";
-  $result = mysqli_query($db, $query);
-  $row = mysqli_fetch_assoc($result);
-  $nombrePadre = $row['nombre'];
+    // Obtener el nombre del docente de la base de datos
+    $db = conectar(); // Asegúrate de tener la conexión a la base de datos establecida
+    $query = "SELECT nombre FROM padre WHERE id = $padreId";
+    $result = mysqli_query($db, $query);
+    $row = mysqli_fetch_assoc($result);
+    $nombrePadre = $row['nombre'];
 
-  // Imprimir el mensaje de bienvenida
-  echo "<h2>Hola $nombrePadre, bienvenido al Área del Padre.</h2>";
-
+    // Imprimir el mensaje de bienvenida
+    echo "<h2>Hola $nombrePadre, bienvenido al Área del Padre.</h2>";
+  } else {
+    // Si no se ha iniciado sesión, puedes redirigir al usuario a la página de inicio de sesión
+    header('Location: ../index2.php');
+    exit();
+  }
   $conn = conectar();
 
   // Verificar la conexión
@@ -70,10 +89,31 @@
   // Obtener la fecha actual
   $fechaActual = date("Y-m-d");
 
-  // Calcular el mes y año actual en español
-  setlocale(LC_TIME, 'es_ES'); // Establecer localización en español
-  $mesActual = ucfirst(strftime("%B")); // Nombre completo del mes en español (por ejemplo, "Enero")
-  $anoActual = date("Y");
+  // Mapeo de nombres de meses en inglés a español
+$mesesEnEspanol = [
+  "January" => "Enero",
+  "February" => "Febrero",
+  "March" => "Marzo",
+  "April" => "Abril",
+  "May" => "Mayo",
+  "June" => "Junio",
+  "July" => "Julio",
+  "August" => "Agosto",
+  "September" => "Septiembre",
+  "October" => "Octubre",
+  "November" => "Noviembre",
+  "December" => "Diciembre"
+];
+
+// Establecer la localización en español
+setlocale(LC_TIME, 'es_ES');
+
+// Obtener el nombre completo del mes en inglés
+$mesEnIngles = strftime("%B");
+$anoActual = date("Y");
+// Obtener el nombre del mes en español a partir del mapeo
+$mesActual = $mesesEnEspanol[$mesEnIngles];
+
 
   $sqlMontoCuota = "SELECT monto FROM montos_cuota WHERE id = 1";
   $resultMontoCuota = $conn->query($sqlMontoCuota);

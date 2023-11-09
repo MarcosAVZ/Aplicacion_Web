@@ -33,14 +33,12 @@ if (!empty($estadoFiltro)) {
 }
 
 if (!empty($legajoFiltro)) {
-    $sql .= " AND alumno.legajo LIKE '%$legajoFiltro%'";
-} elseif (!empty($estadoFiltro)) {
-    $sql .= " WHERE cuotas.estado = '$estadoFiltro'";
-    if (!empty($legajoFiltro)) {
+    if (!empty($mesFiltro) || !empty($estadoFiltro)) {
         $sql .= " AND alumno.legajo LIKE '%$legajoFiltro%'";
+    } else {
+        $sql .= " WHERE alumno.legajo LIKE '%$legajoFiltro%'";
     }
 }
-
 
 $resultado = mysqli_query($conexion, $sql);
 
@@ -88,40 +86,64 @@ mysqli_close($conexion);
                 <img src="../../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
             </div>
             <div class="list-group">
-                <a href="../personal.php" class="list-group-item list-group-item-action">Página Principal</a>
+            <?php  
+                session_start();
+                if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
+                ?>
+                <a href="../../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php  
+                }else{
+                ?>
+                <a href="../personal.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php 
+                }
+            ?>
                 <a href="../totalAlumnos.php" class="list-group-item list-group-item-action">Alumnos</a>
-                <a class="dropdown-toggle list-group-item list-group-item-action active" aria-current="true" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Pagos
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="Pagos.php">Lista Pagos</a></li>
                     <li><a class="dropdown-item" href="cuotas.php">Estado Pagos</a></li>
+                    <li><a class="dropdown-item" href="../montoCuota.php">Actualizar precios</a></li>
                 </ul>
                 <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Cursos y Horarios
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="cursosHorarios.php">Generar Horario</a></li>
-                    <li><a class="dropdown-item" href="relacionarCursoHorario.php">Asignar Curso</a></li>
+                    <li><a class="dropdown-item" href="../cursosHorarios.php">Generar Horario</a></li>
+                    <li><a class="dropdown-item" href="../relacionarCursoHorario.php">Asignar Curso</a></li>
                 </ul>
                 <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Matriculación
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="MatricularAlumno.php">Matricular Alumno</a></li>
-                    <li><a class="dropdown-item" href="MatricularPadre.php">Matricular Padre</a></li>
+                    <li><a class="dropdown-item" href="../MatricularAlumno.php">Matricular Alumno</a></li>
+                    <li><a class="dropdown-item" href="../MatricularPadre.php">Matricular Padre</a></li>
                 </ul>
+
             </div>
-            <a href="../../index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
         </div>
+        <a href="..\..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
     </div>
     <!-- Termina el bloque de código del sidebar -->
     <div class="mt-2 ms-2">
         <form method="get">
             <div class="form-inline">
-                <label class="h5 ms-2" for="mes">Filtrar por Mes:</label>
-                <input class="form-control ms-1" style="max-width: 150px;" type="text" name="mes" id="mes" value="<?= $mesFiltro ?>">
-
+            <label class="h5 ms-2" for="mes">Filtrar por Mes:</label>
+                <select class="form-select ms-1" style="max-width: 150px;" name="mes" id="mes">
+                    <option value="">Todos</option>
+                    <option value="marzo" <?= ($mesFiltro == 'marzo') ? 'selected' : '' ?>>Marzo</option>
+                    <option value="abril" <?= ($mesFiltro == 'abril') ? 'selected' : '' ?>>Abril</option>
+                    <option value="mayo" <?= ($mesFiltro == 'mayo') ? 'selected' : '' ?>>Mayo</option>
+                    <option value="junio" <?= ($mesFiltro == 'junio') ? 'selected' : '' ?>>Junio</option>
+                    <option value="julio" <?= ($mesFiltro == 'julio') ? 'selected' : '' ?>>Julio</option>
+                    <option value="agosto" <?= ($mesFiltro == 'agosto') ? 'selected' : '' ?>>Agosto</option>
+                    <option value="septiembre" <?= ($mesFiltro == 'septiembre') ? 'selected' : '' ?>>Septiembre</option>
+                    <option value="octubre" <?= ($mesFiltro == 'octubre') ? 'selected' : '' ?>>Octubre</option>
+                    <option value="noviembre" <?= ($mesFiltro == 'noviembre') ? 'selected' : '' ?>>Noviembre</option>
+                    <option value="diciembre" <?= ($mesFiltro == 'diciembre') ? 'selected' : '' ?>>Diciembre</option>
+                </select>
                 <label class="h5 ms-2" for="estado">Filtrar por Estado:</label>
                 <select class="form-select ms-1" style="max-width: 150px;" name="estado" id="estado">
                     <option value="">Todos</option>

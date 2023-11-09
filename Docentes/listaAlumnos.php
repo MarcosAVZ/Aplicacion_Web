@@ -29,7 +29,18 @@
                 <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
             </div>
             <div class="list-group">
-                <a href="Docente.php" class="list-group-item list-group-item-action ">Página Principal</a>
+            <?php  
+                session_start();
+                if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
+                ?>
+                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php  
+                }else{
+                ?>
+                <a href="Docente.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php 
+                }
+            ?>
                 <a href="listaAlumnos.php" class="list-group-item list-group-item-action active" aria-current="true">Alumnos</a>
                 <a href="AulasDesig.php" class="list-group-item list-group-item-action">Aula Designada</a>
                 <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -53,12 +64,18 @@
     $conexion = conectar();
 
     // Obtener el id del docente
-    $id_docente = 1;
+    if (isset($_SESSION['user_id'])) {
+        // Obtener el ID del docente de la variable de sesión
+        $id_docente = $_SESSION['user_id'];
 
     // Consulta para obtener los cursos del docente
     $cursos_docente = "SELECT c.id, c.nombre FROM cursodocente cd INNER JOIN curso c ON c.id = cd.idCurso WHERE cd.idDocente = $id_docente";
     $resultado_cursos_docente = mysqli_query($conexion, $cursos_docente);
-
+    } else {
+    // Si el usuario no está autenticado, redirigir al archivo de inicio de sesión
+    header('Location: Docente.php');
+    exit();
+    }  
     // Mostrar formulario para seleccionar el curso
     echo "<form action='' method='GET' class='no-print ms-3'>";
     echo "<div class='form-inline'>";

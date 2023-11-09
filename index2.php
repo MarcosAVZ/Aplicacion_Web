@@ -1,5 +1,6 @@
 <?php
 // Archivo de configuración de la base de datos
+session_start();
 require_once 'conexion.php';
 
 // Comprobar si se ha enviado el formulario de inicio de sesión
@@ -15,11 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $query = "SELECT * FROM alumno WHERE correo = '$correo' AND password = '$contrasena'";
   $result = mysqli_query($db, $query);
   $row = mysqli_fetch_assoc($result);
-  session_start();
-
-
   if ($row) {
     // Redirigir al enlace de alumnos
+    $_SESSION['autoridad'] = 0;
     $_SESSION['user_id'] = $row['id'];
     header('Location: Alumno/Alumno.php');
     exit();
@@ -30,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $result = mysqli_query($db, $query);
   $row = mysqli_fetch_assoc($result);
   if ($row) {
+    $_SESSION['autoridad'] = 0;
     $_SESSION['user_id'] = $row['id'];
     // Redirigir al enlace de docentes
     header('Location: Docentes/Docente.php');
@@ -37,21 +37,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   // Consultar en la tabla 'administrador'
-  //$query = "SELECT * FROM administrador WHERE correo = '$correo' AND password = '$contrasena'";
-  //$result = mysqli_query($db, $query);
-  //$row = mysqli_fetch_assoc($result);
-  //if ($row) {
-
-  // Redirigir al enlace de administrador
-  //  header('Location: enlace_administrador.php');
-  //  exit();
-  //}
+  $query = "SELECT * FROM autoridad WHERE correo = '$correo' AND password = '$contrasena'";
+  $result = mysqli_query($db, $query);
+  $row = mysqli_fetch_assoc($result);
+  if ($row) {
+    $_SESSION['user_id'] = $row['id'];
+    $_SESSION['autoridad'] = 1;
+    header('Location: Autoridad/autoridad.php');
+   exit();
+  }
 
   // Consultar en la tabla 'padre'
   $query = "SELECT * FROM padre WHERE correo = '$correo' AND password = '$contrasena'";
   $result = mysqli_query($db, $query);
   $row = mysqli_fetch_assoc($result);
   if ($row) {
+    $_SESSION['user_id'] = $row['id'];
+    $_SESSION['autoridad'] = 0;
     // Redirigir al enlace de padre
     header('Location: Padre/padre.php');
     exit();
@@ -62,6 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $result = mysqli_query($db, $query);
   $row = mysqli_fetch_assoc($result);
   if ($row) {
+    $_SESSION['autoridad'] = 0;
+    $_SESSION['user_id'] = $row['id'];
     // Redirigir al enlace de personal
     header('Location: Personal/personal.php');
     exit();
