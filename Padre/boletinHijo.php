@@ -29,7 +29,18 @@
                 <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
             </div>
             <div class="list-group">
-                <a href="padre.php" class="list-group-item list-group-item-action">Página Principal</a>
+            <?php
+             session_start();
+                if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
+                ?>
+                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php  
+                }else{
+                ?>
+                <a href="padre.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php 
+                }
+            ?>
                 <a href="horarioHijo.php" class="list-group-item list-group-item-action">Horarios</a>
                 <a href="boletinHijo.php" class="list-group-item list-group-item-action active" aria-current="true">Boletín</a>
                 <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -59,7 +70,8 @@
         }
 
         // Consulta para obtener los alumnos vinculados al padre
-        $idPadre = 1; // ID del padre (debes reemplazarlo por el valor correspondiente)
+        if (isset($_SESSION['user_id'])) {
+            $idPadre = $_SESSION['user_id'];
         $sql = "SELECT alumno.nombre AS nombre_alumno, curso.nombre AS nombre_curso, examen.nombre AS nombre_examen, examenalumno.nota
         FROM alumno
         INNER JOIN alumnocurso ON alumno.id = alumnocurso.idAlumno
@@ -69,7 +81,11 @@
         WHERE alumno.idPadre = $idPadre";
 
         $result = $conn->query($sql);
-
+        } else {
+        // Si no se ha iniciado sesión, puedes redirigir al usuario a la página de inicio de sesión
+        header('Location: padre.php');
+        exit();
+        }
         // Verificar si se encontraron resultados
         if ($result->num_rows > 0) {
             // Mostrar la tabla con los datos de los alumnos y sus notas

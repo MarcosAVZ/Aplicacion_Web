@@ -42,7 +42,18 @@
         <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
       </div>
       <div class="list-group">
-        <a href="Docente.php" class="list-group-item list-group-item-action">Página Principal</a>
+      <?php  
+                session_start();
+                if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
+                ?>
+                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php  
+                }else{
+                ?>
+                <a href="Docente.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php 
+                }
+            ?>
         <a href="listaAlumnos.php" class="list-group-item list-group-item-action">Alumnos</a>
         <a href="AulasDesig.php" class="list-group-item list-group-item-action">Aula Designada</a>
         <a class="dropdown-toggle list-group-item list-group-item-action  active" aria-current="true" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -61,7 +72,15 @@
   <?php
   // Conexión a la base de datos
 
-  $docenteId = 1;
+  // Verificar si el usuario está autenticado como docente
+  if (isset($_SESSION['user_id'])) {
+    // Obtener el ID del docente de la variable de sesión
+    $docenteId = $_SESSION['user_id'];
+  } else {
+    // Si el usuario no está autenticado, redirigir al archivo de inicio de sesión
+    header('Location: ../index.php');
+    exit();
+  }
 
   include '../Conexion.php';
 

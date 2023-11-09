@@ -29,7 +29,18 @@
                 <img src="../../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
             </div>
             <div class="list-group">
-                <a href="../padre.php" class="list-group-item list-group-item-action">Página Principal</a>
+            <?php
+            session_start();
+                if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
+                ?>
+                <a href="../../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php  
+                }else{
+                ?>
+                <a href="../padre.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php 
+                }
+            ?>
                 <a href="../horarioHijo.php" class="list-group-item list-group-item-action">Horarios</a>
                 <a href="../boletinHijo.php" class="list-group-item list-group-item-action">Boletín</a>
                 <a class="dropdown-toggle list-group-item list-group-item-action active" aria-current="true" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -40,8 +51,8 @@
                     <li><a class="dropdown-item" href="pagar_cuota.php">Cuotas Pendientes</a></li>
                 </ul>
             </div>
-            <a href="..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
         </div>
+        <a href="..\..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
     </div>
     <!-- Termina el bloque de código del sidebar -->
 
@@ -51,7 +62,8 @@
         // Conexión a la base de datos (asegúrate de tener configurada la conexión)
         require '../../conexion.php';
         $conexion = conectar();
-        $id_padre = 1; // Supongamos que $id_padre contiene el ID del padre actual
+        if (isset($_SESSION['user_id'])) {
+            $id_padre = $_SESSION['user_id'];
 
         // Verifica la conexión
         if (!$conexion) {
@@ -79,7 +91,11 @@
 
         // Ejecuta la consulta y obtiene los resultados
         $resultado = mysqli_query($conexion, $sql);
-
+        } else {
+        // Si no se ha iniciado sesión, puedes redirigir al usuario a la página de inicio de sesión
+        header('Location: padre.php');
+        exit();
+        }
         if ($resultado) {
             // Inicializa un arreglo para almacenar las cuotas
             $cuotas = array();

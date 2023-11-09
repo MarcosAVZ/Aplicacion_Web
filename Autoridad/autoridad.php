@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <link rel="stylesheet" href="../Css/styles.css">
-  <title>Área de Alumnno</title>
+  <title>Área de la Autoridad</title>
 </head>
 
 <body>
@@ -18,7 +18,9 @@
     </a>
     <h1 style="text-align: center; color: #05429f">Sistema de Gestión de Educar para Transformar</h1>
   </header>
-
+  <?php
+  session_start();
+?>
   <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasExampleLabel">Secciones</h5>
@@ -28,52 +30,14 @@
       <div>
         <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
       </div>
-      <div class="list-group">
-      <?php  
-                session_start();
-                if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
-                ?>
-                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
-                <?php  
-                }else{
-                ?>
-                <a href="Alumno.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
-                <?php 
-                }
-            ?>
-        <a href="PassAlumno.php" class="list-group-item list-group-item-action">Cambiar Contraseña</a>
-        <a href="horarios.php" class="list-group-item list-group-item-action">Horarios</a>
-        <a href="boletin.php" class="list-group-item list-group-item-action">Boletín</a>
+        <a href="../Personal/personal.php" class="list-group-item list-group-item-action active" aria-current="true">Seccion del Personal</a>
+        <a href="../Docentes/Docente.php" class="list-group-item list-group-item-action active" aria-current="true">Seccion del Docente</a>
+        <a href="../Padre/padre.php" class="list-group-item list-group-item-action active" aria-current="true">Seccion del Padre</a>
+        <a href="../Alumno/Alumno.php" class="list-group-item list-group-item-action active" aria-current="true">Seccion del Alumno</a>
       </div>
       <a href="..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
     </div>
   </div>
-  <!-- Termina el bloque de código del sidebar -->
-  <?php
-  include '../Conexion.php';
-
-  // Comenzar la sesión
-  // Verificar si el usuario está autenticado como docente
-  if (isset($_SESSION['user_id'])) {
-    // Obtener el ID del docente de la variable de sesión
-    $alumnoId = $_SESSION['user_id'];
-
-    // Obtener el nombre del docente de la base de datos
-    $db = conectar(); // Asegúrate de tener la conexión a la base de datos establecida
-    $query = "SELECT nombre FROM alumno WHERE id = $alumnoId";
-    $result = mysqli_query($db, $query);
-    $row = mysqli_fetch_assoc($result);
-    $nombreAlumno = $row['nombre'];
-
-    // Imprimir el mensaje de bienvenida
-    echo "<h2>Hola $nombreAlumno, bienvenido.<h2>";
-  } else {
-    // Si el usuario no está autenticado, redirigir al archivo de inicio de sesión
-    header('Location: index2.php');
-    exit();
-  }
-  ?>
-
   <div class="card form-container mx-auto p-2 mt-3" style="width: 60vw">
     <p>
     <h3>CICLO 2023</h3>

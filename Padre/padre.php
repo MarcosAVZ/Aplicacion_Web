@@ -18,7 +18,9 @@
     </a>
     <h1 style="text-align: center; color: #05429f">Sistema de Gestión de Educar para Transformar</h1>
   </header>
-
+  <?php
+  session_start();
+?>
   <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasExampleLabel">Secciones</h5>
@@ -29,9 +31,20 @@
         <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
       </div>
       <div class="list-group">
+        <?php
+        if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
+        ?>
+        <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+        <?php  
+        }else{
+          ?>
         <a href="padre.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+        <?php 
+        }
+        ?>
         <a href="horarioHijo.php" class="list-group-item list-group-item-action">Horarios</a>
         <a href="boletinHijo.php" class="list-group-item list-group-item-action">Boletín</a>
+        <a href="PassPadre.php" class="list-group-item list-group-item-action">Cambiar Contraseña</a>
         <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           Pagos
         </a>
@@ -46,9 +59,11 @@
   <!-- Termina el bloque de código del sidebar -->
 
   <?php
+  
   include '../Conexion.php';
 
-    $padreId = 1;
+  if (isset($_SESSION['user_id'])) {
+    $padreId = $_SESSION['user_id'];
 
     // Obtener el nombre del docente de la base de datos
     $db = conectar(); // Asegúrate de tener la conexión a la base de datos establecida
@@ -59,80 +74,129 @@
 
     // Imprimir el mensaje de bienvenida
     echo "<h2>Hola $nombrePadre, bienvenido al Área del Padre.</h2>";
+  } else {
+    // Si no se ha iniciado sesión, puedes redirigir al usuario a la página de inicio de sesión
+    header('Location: ../index2.php');
+    exit();
+  }
+  $conn = conectar();
 
-$conn = conectar(); 
+  // Verificar la conexión
+  if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+  }
 
-// Verificar la conexión
-if ($conn->connect_error) {
-  die("Conexión fallida: " . $conn->connect_error);
-}
+  // Obtener la fecha actual
+  $fechaActual = date("Y-m-d");
 
-// Obtener la fecha actual
-$fechaActual = date("Y-m-d");
+  // Mapeo de nombres de meses en inglés a español
+$mesesEnEspanol = [
+  "January" => "Enero",
+  "February" => "Febrero",
+  "March" => "Marzo",
+  "April" => "Abril",
+  "May" => "Mayo",
+  "June" => "Junio",
+  "July" => "Julio",
+  "August" => "Agosto",
+  "September" => "Septiembre",
+  "October" => "Octubre",
+  "November" => "Noviembre",
+  "December" => "Diciembre"
+];
 
-// Calcular el mes y año actual en español
-setlocale(LC_TIME, 'es_ES'); // Establecer localización en español
-$mesActual = ucfirst(strftime("%B")); // Nombre completo del mes en español (por ejemplo, "Enero")
+// Establecer la localización en español
+setlocale(LC_TIME, 'es_ES');
+
+// Obtener el nombre completo del mes en inglés
+$mesEnIngles = strftime("%B");
 $anoActual = date("Y");
+// Obtener el nombre del mes en español a partir del mapeo
+$mesActual = $mesesEnEspanol[$mesEnIngles];
 
-$sqlMontoCuota = "SELECT monto FROM montos_cuota WHERE id = 1";
-$resultMontoCuota = $conn->query($sqlMontoCuota);
 
-if ($resultMontoCuota->num_rows > 0) {
-  $rowMontoCuota = $resultMontoCuota->fetch_assoc();
-  $montoCuota = $rowMontoCuota["monto"];
-} else {
-  $montoCuota = 0.00; // Valor predeterminado si no se encuentra un monto
-}
+  $sqlMontoCuota = "SELECT monto FROM montos_cuota WHERE id = 1";
+  $resultMontoCuota = $conn->query($sqlMontoCuota);
 
-// Consultar todos los padres
-$sqlPadres = "SELECT id FROM padre";
-$resultPadres = $conn->query($sqlPadres);
+  if ($resultMontoCuota->num_rows > 0) {
+    $rowMontoCuota = $resultMontoCuota->fetch_assoc();
+    $montoCuota = $rowMontoCuota["monto"];
+  } else {
+    $montoCuota = 0.00; // Valor predeterminado si no se encuentra un monto
+  }
 
-if ($resultPadres->num_rows > 0) {
-  while ($rowPadre = $resultPadres->fetch_assoc()) {
+  // Consultar todos los padres
+  $sqlPadres = "SELECT id FROM padre";
+  $resultPadres = $conn->query($sqlPadres);
+
+  if ($resultPadres->num_rows > 0) {
+    while ($rowPadre = $resultPadres->fetch_assoc()) {
       $idPadre = $rowPadre["id"];
-      
+
       // Verificar si ya existe una cuota para este padre en el mes actual
       $sqlExistente = "SELECT id FROM cuotas WHERE id_padre = $idPadre AND mes = '$mesActual' AND año = $anoActual";
       $resultExistente = $conn->query($sqlExistente);
-      
-      if ($resultExistente->num_rows == 0) {
-          // Si no existe una cuota para este padre en el mes actual, insertar una nueva cuota
-          $estadoCuota = "pendiente"; // Puedes cambiar el estado inicial
-          
-          // Consultar los alumnos asociados a este padre
-          $sqlAlumnos = "SELECT idAlumno FROM cuotas WHERE id_padre = $idPadre";
-          $resultAlumnos = $conn->query($sqlAlumnos);
-          
-          if ($resultAlumnos->num_rows > 0) {
-              while ($rowAlumno = $resultAlumnos->fetch_assoc()) {
-                  $idAlumno = $rowAlumno["idAlumno"];
-                  
-                  // Verificar si ya existe una cuota para este alumno en el mes actual
-                  $sqlCuotaExistente = "SELECT id FROM cuotas WHERE id_padre = $idPadre AND idAlumno = $idAlumno AND mes = '$mesActual' AND año = $anoActual";
-                  $resultCuotaExistente = $conn->query($sqlCuotaExistente);
-                  
-                  if ($resultCuotaExistente->num_rows == 0) {
-                      $sqlInsert = "INSERT INTO cuotas (id_padre, idAlumno, mes, año, monto, estado) VALUES ($idPadre, $idAlumno, '$mesActual', $anoActual, $montoCuota, '$estadoCuota')";
-                      
-                      if ($conn->query($sqlInsert) === TRUE) {
-                        
-                      } else {
-                          echo "Error al insertar la cuota: " . $conn->error;
-                      }
-                  }
-              }
-          }
-      }
-  }
-} else {
-  echo "No se encontraron padres en la base de datos.";
-}
 
-// Cerrar la conexión a la base de datos
-$conn->close();
-?>
+      if ($resultExistente->num_rows == 0) {
+        // Si no existe una cuota para este padre en el mes actual, insertar una nueva cuota
+        $estadoCuota = "pendiente"; // Puedes cambiar el estado inicial
+
+        // Consultar los alumnos asociados a este padre
+        $sqlAlumnos = "SELECT idAlumno FROM cuotas WHERE id_padre = $idPadre";
+        $resultAlumnos = $conn->query($sqlAlumnos);
+
+        if ($resultAlumnos->num_rows > 0) {
+          while ($rowAlumno = $resultAlumnos->fetch_assoc()) {
+            $idAlumno = $rowAlumno["idAlumno"];
+
+            // Verificar si ya existe una cuota para este alumno en el mes actual
+            $sqlCuotaExistente = "SELECT id FROM cuotas WHERE id_padre = $idPadre AND idAlumno = $idAlumno AND mes = '$mesActual' AND año = $anoActual";
+            $resultCuotaExistente = $conn->query($sqlCuotaExistente);
+
+            if ($resultCuotaExistente->num_rows == 0) {
+              $sqlInsert = "INSERT INTO cuotas (id_padre, idAlumno, mes, año, monto, estado) VALUES ($idPadre, $idAlumno, '$mesActual', $anoActual, $montoCuota, '$estadoCuota')";
+
+              if ($conn->query($sqlInsert) === TRUE) {
+              } else {
+                echo "Error al insertar la cuota: " . $conn->error;
+              }
+            }
+          }
+        }
+      }
+    }
+  } else {
+    echo "No se encontraron padres en la base de datos.";
+  }
+
+  // Cerrar la conexión a la base de datos
+  $conn->close();
+  ?>
+
+  <div class="card form-container mx-auto p-2 mt-3" style="width: 60vw">
+    <p>
+    <h3>CICLO 2023</h3>
+    La ventanilla de pagos funciona en la facultad de lunes a viernes de 17 a 19 hs, pero en lo posible solicitamos paguen por transferencia.<br>
+    Por Favor para abonar tener en cuenta la siguiente información:<br>
+    Transferir el importe a los datos de la cuenta que figuran abajo y enviar el comprobante de depósito o transferencia por correo electrónico a tesoreria@educar.transformar.ar, con copia al correo de la carrera<br>
+    CUIT: 21607420866<br>
+    RAZÓN SOCIAL: CENTRO EDUCATIVO EDUCAR PARA TRANSFORMAR<br>
+    TIPO CUENTA 03 - CC $ NÚMERO CUENTA 2910914352168<br>
+    CBU 1747155411100067955364 ALIAS EPT.RESIS<br>
+    Si no recuerdan su nro de legajo y/o contraseña, deben dirigirse a Alumnado.<br>
+    </p>
+  </div>
+  <div class="card form-container mx-auto p-2 mt-3" style="width: 60vw">
+    <p>
+
+      El <b>Centro Educativo - Educar Para Transformar - Resistencia</b> pone a disposición de la comunidad educativa este"Entorno Virtual".<br>
+
+      El objetivo es servir de base para el desarrollo de actividades on - line.<br>
+      Este entorno puede ser utilizado para simplemente colocar material e información a disposición de los alumnos o manejar completamente el curso a través del Entorno Virtual.<br>
+      Desarrollado por Almenar Ignacio y Avanzatti Marcos para la carrera de Tecnicatura Universitaria en Programación de la UTN FRRe.
+    </p>
+  </div>
+
   <div id="footer">
     <img src="../Css/Logotipo200x200.png">
   </div>
@@ -141,4 +205,3 @@ $conn->close();
 </body>
 
 </html>
-

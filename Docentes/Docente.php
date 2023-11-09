@@ -29,7 +29,18 @@
         <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
       </div>
       <div class="list-group">
-        <a href="Docente.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+      <?php  
+                session_start();
+                if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
+                ?>
+                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php  
+                }else{
+                ?>
+                <a href="Docente.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php 
+                }
+            ?>
         <a href="listaAlumnos.php" class="list-group-item list-group-item-action">Alumnos</a>
         <a href="AulasDesig.php" class="list-group-item list-group-item-action">Aula Designada</a>
         <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -47,9 +58,6 @@
 
   <?php
   include '../Conexion.php';
-
-  // Comenzar la sesión
-  session_start();
 
   // Verificar si el usuario está autenticado como docente
   if (isset($_SESSION['user_id'])) {
@@ -71,6 +79,29 @@
     exit();
   }
   ?>
+  <div class="card form-container mx-auto p-2 mt-3" style="width: 60vw">
+    <p>
+    <h3>CICLO 2023</h3>
+    La ventanilla de pagos funciona en la facultad de lunes a viernes de 17 a 19 hs, pero en lo posible solicitamos paguen por transferencia.<br>
+    Por Favor para abonar tener en cuenta la siguiente información:<br>
+    Transferir el importe a los datos de la cuenta que figuran abajo y enviar el comprobante de depósito o transferencia por correo electrónico a tesoreria@educar.transformar.ar, con copia al correo de la carrera<br>
+    CUIT: 21607420866<br>
+    RAZÓN SOCIAL: CENTRO EDUCATIVO EDUCAR PARA TRANSFORMAR<br>
+    TIPO CUENTA 03 - CC $ NÚMERO CUENTA 2910914352168<br>
+    CBU 1747155411100067955364 ALIAS EPT.RESIS<br>
+    Si no recuerdan su nro de legajo y/o contraseña, deben dirigirse a Alumnado.<br>
+    </p>
+  </div>
+  <div class="card form-container mx-auto p-2 mt-3" style="width: 60vw">
+    <p>
+
+      El <b>Centro Educativo - Educar Para Transformar - Resistencia</b> pone a disposición de la comunidad educativa este"Entorno Virtual".<br>
+
+      El objetivo es servir de base para el desarrollo de actividades on - line.<br>
+      Este entorno puede ser utilizado para simplemente colocar material e información a disposición de los alumnos o manejar completamente el curso a través del Entorno Virtual.<br>
+      Desarrollado por Almenar Ignacio y Avanzatti Marcos para la carrera de Tecnicatura Universitaria en Programación de la UTN FRRe.
+    </p>
+  </div>
 
   <div id="footer">
     <img src="../Css/Logotipo200x200.png">

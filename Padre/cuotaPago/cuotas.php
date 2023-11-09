@@ -16,12 +16,13 @@
         <input type="submit" value="Filtrar">
     </form>
 <?php
-
+session_start();
     // Supongamos que $id_padre contiene el ID del padre actual
     require '../../conexion.php';
 
     $conexion = conectar();
-    $id_padre = 1;
+    if (isset($_SESSION['user_id'])) {
+        $id_adre = $_SESSION['user_id'];
 
     // Verifica la conexión
     if (!$conexion) {
@@ -46,6 +47,11 @@
 
     $resultado = mysqli_query($conexion, $sql);
 
+    } else {
+    // Si no se ha iniciado sesión, puedes redirigir al usuario a la página de inicio de sesión
+    header('Location: padre.php');
+    exit();
+    }
     if (mysqli_num_rows($resultado) > 0) {
         // Muestra los resultados en una tabla
         echo "<table>

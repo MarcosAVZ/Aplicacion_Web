@@ -29,7 +29,18 @@
                 <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
             </div>
             <div class="list-group">
-                <a href="alumno.php" class="list-group-item list-group-item-action">Página Principal</a>
+            <?php  
+                session_start();
+                if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
+                ?>
+                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php  
+                }else{
+                ?>
+                <a href="Alumno.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php 
+                }
+            ?>
                 <a href="horarios.php" class="list-group-item list-group-item-action">Horarios</a>
                 <a href="boletin.php" class="list-group-item list-group-item-action active" aria-current="true">Boletín</a>
             </div>
@@ -41,7 +52,17 @@
     // Conexión a la base de datos
     require '../conexion.php';
     $conn = conectar();
-    $idAlumno = 1; // Ejemplo: ID del alumno actualmente logueado
+
+
+  // Verificar si el usuario está autenticado como docente
+  if (isset($_SESSION['user_id'])) {
+    // Obtener el ID del docente de la variable de sesión
+    $idAlumno = $_SESSION['user_id'];
+} else {
+    // Si el usuario no está autenticado, redirigir al archivo de inicio de sesión
+    header('Location: Alumno.php');
+    exit();
+  }
 
     // Consulta para obtener los cursos vinculados al alumno
     $sqlCursos = "SELECT c.id, c.nombre
