@@ -42,7 +42,7 @@
         <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
       </div>
       <div class="list-group">
-      <?php  
+        <?php  
                 session_start();
                 if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
                 ?>
@@ -72,19 +72,10 @@
   <?php
   // Conexión a la base de datos
 
-  // Verificar si el usuario está autenticado como docente
-  if (isset($_SESSION['user_id'])) {
-    // Obtener el ID del docente de la variable de sesión
-    $docenteId = $_SESSION['user_id'];
-  } else {
-    // Si el usuario no está autenticado, redirigir al archivo de inicio de sesión
-    header('Location: ../index.php');
-    exit();
-  }
+  $docenteId = 1;
 
-  include '../Conexion.php';
+  include '../conexion.php';
 
-  // Conectarse a la base de datos
   $conn = conectar();
   if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
@@ -106,6 +97,13 @@
                         WHERE idCurso = $cursoId";
 
     $resultExamenes = $conn->query($sqlExamenes);
+
+    $sqlAlumnos = "SELECT a.id, a.nombre
+               FROM alumno a
+               INNER JOIN alumnocurso ac ON a.id = ac.idAlumno
+               WHERE ac.idCurso = $cursoId";
+
+     $resultAlumnos = $conn->query($sqlAlumnos);
   }
 
   // Obtener alumnos vinculados al curso seleccionado
@@ -113,30 +111,33 @@
     $alumnoId = $_POST['alumno'];
     $examenId = $_POST['examen'];
     $nota = $_POST['nota'];
-  
-    // Consulta SQL con consulta preparada
-    $insertQuery = "INSERT INTO examenalumno (idAlumno, idExamen, nota) VALUES (?, ?, ?)";
-  
-    // Preparar la consulta
-    $stmt = $conn->prepare($insertQuery);
-  
-    if ($stmt) {
-      // Vincular parámetros
-      $stmt->bind_param("iii", $alumnoId, $examenId, $nota);
-  
-      // Ejecutar la consulta preparada
-      if ($stmt->execute()) {
-        echo "Los datos se guardaron correctamente en la tabla examenalumno.";
-      } else {
-        echo "Error al guardar los datos: " . $stmt->error;
-      }
-  
-      // Cerrar la consulta preparada
-      $stmt->close();
+    
+    // Verificar si ya existe una calificación para este alumno y examen
+    $sqlVerificar = "SELECT * FROM examenalumno WHERE idAlumno = $alumnoId AND idExamen = $examenId";
+    $resultVerificar = $conn->query($sqlVerificar);
+
+    if ($resultVerificar->num_rows > 0) {
+        echo "Error: Este alumno ya fue calificado en este examen.";
     } else {
-      echo "Error al preparar la consulta: " . $conn->error;
+        // Si no hay duplicados, proceder con la inserción
+        $insertQuery = "INSERT INTO examenalumno (idAlumno, idExamen, nota) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($insertQuery);
+
+        if ($stmt) {
+            $stmt->bind_param("iii", $alumnoId, $examenId, $nota);
+
+            if ($stmt->execute()) {
+                echo "Los datos se guardaron correctamente en la tabla examenalumno.";
+            } else {
+                echo "Error al guardar los datos: " . $stmt->error;
+            }
+
+            $stmt->close();
+        } else {
+            echo "Error al preparar la consulta: " . $conn->error;
+        }
     }
-  }
+}
   ?>
 
   <div class="card form-container mx-auto p-2 mt-3" style="width: 500px">
@@ -191,7 +192,7 @@
         </div>
         <br>
           <h5 for="nota">Nota:</h5>
-          <input class="form-control max-width-input mx-auto p-2" stlye="padding-left: 50px;" type="number" name="nota" id="nota" placeholder="Ingrese la nota numérica">
+          <input class="form-control max-width-input mx-auto p-2" style="padding-left: 50px;" type="number" name="nota" id="nota" placeholder="Ingrese la nota numérica">
         <br><br>
         <input type="submit" class="btn btn-primary" name="submit_examenalumno" value="Guardar">
 

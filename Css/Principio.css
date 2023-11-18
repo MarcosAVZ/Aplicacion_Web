@@ -1,0 +1,525 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+body{
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+h1{font-size: 3,5cm;}
+h2{ font-size: 2,7cm;}
+h3{font-size: 2cm;}
+p{font-size: 1,25cm;}
+
+.contenedor{
+    max-width: 1400px;
+    margin: auto;
+}
+
+#IniciarSesion a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+#IniciarSesion a:hover {
+    color: #ff6600;
+}
+
+header {
+    background-color: #3dfdb0;
+    color: #fff;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%; /* Ancho del encabezado al 100% de la ventana */
+}
+
+/* Estilos para el contenedor */
+.contenedor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Estilos para el logo */
+#logo img {
+    width: 100px;
+    height: 100px;
+}
+
+/* Estilos para los enlaces de navegación */
+.menu ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    
+}
+
+.menu ul a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s;
+    text-align: right;
+}
+
+.menu ul a:hover {
+    color: #ff6600;
+}
+
+.Institucion-foto{
+    padding-top: 15vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction:  column;
+    height:  95vh;
+    color: whitesmoke;
+    background-image: linear-gradient(
+        0deg,
+        rgba(55, 49, 49, 0.226),
+        rgba(55, 49, 49, 0.685)
+    ),url("img/escuela.jpg");
+    background-size: cover;
+    background-position: bottom;
+    
+}
+/* Estilos para la sección de Quiénes Somos */
+#quienes-somos {
+    background-color: #f2f2f2; /* Fondo gris claro */
+    padding: 20vh;
+    text-align: center;
+}
+
+#quienes-somos .contenedor {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+#quienes-somos h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #237ad6; /* Color de texto oscuro */
+}
+
+#quienes-somos p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: #555; /* Color de texto gris */
+}
+
+#quienes-somos strong {
+    font-weight: bold;
+    color: #333; /* Color de texto oscuro */
+}
+
+/* Estilos para enlaces dentro de la sección */
+#quienes-somos a {
+    text-decoration: none;
+    color: #007bff; /* Color de enlace azul */
+    transition: color 0.3s;
+}
+
+#quienes-somos a:hover {
+    color: #ff6600; /* Color de enlace al pasar el cursor */
+}
+
+/* Estilos alternativos para la sección de Niveles Educativos */
+#niveles-educativos {
+    background-color: #f2f2f2;
+    color: #fefefe;
+    text-align: center;
+    padding: 20vh;
+}
+
+#niveles-educativos h3 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #1886e6;
+}
+
+/* Estilos para cada nivel educativo */
+.nivel-inicial,
+.nivel-primario,
+.nivel-secundario {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px;
+    background-color: #f9f9f9;
+    text-align: left;
+    transition: transform 0.3s;
+}
+
+/* Efecto de desplazamiento al pasar el mouse sobre cada nivel educativo */
+.nivel-inicial:hover,
+.nivel-primario:hover,
+.nivel-secundario:hover {
+    transform: scale(1.05);
+}
+
+.nivel-inicial{
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    padding: 40px;
+    margin: 20px;
+    background-image: linear-gradient(
+        0deg,
+        rgba(55, 49, 49, 0.226),
+        rgba(55, 49, 49, 0.685)
+    ),url("img/inicial.png");
+    background-size: cover; /* Fondo que cubre todo el elemento */
+    background-position: center;
+}
+.nivel-primario{
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    padding: 40px;
+    margin: 20px;
+    background-image: linear-gradient(
+        0deg,
+        rgba(55, 49, 49, 0.226),
+        rgba(55, 49, 49, 0.685)
+    ),url("img/primaria.png");
+    background-size: cover; /* Fondo que cubre todo el elemento */
+    background-position: center;
+}
+.nivel-secundario{
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    padding: 40px;
+    margin: 20px;
+    background-image: linear-gradient(
+        0deg,
+        rgba(55, 49, 49, 0.226),
+        rgba(55, 49, 49, 0.685)
+    ),url("img/secundaria.png");
+    background-size: cover; /* Fondo que cubre todo el elemento */
+    background-position: center;
+}
+
+
+
+/* Estilos para los títulos y descripciones de cada nivel educativo */
+
+.nivel-inicial h2,
+.nivel-primario h2,
+.nivel-secundario h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #f2f2f2;
+}
+.nivel-inicial p,
+.nivel-primario P,
+.nivel-secundario p {
+    font-size: 18px;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+/* Contenedor del contenido de Niveles Educativos */
+.contenedor {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: auto;
+}
+
+
+/* Estilos para la sección de Bienestar Estudiantil */
+#bienestar-estudiantil {
+    color: #237ad6;
+    background-color: #f2f2f2;
+    padding: 20vh;
+    text-align: center;
+}
+
+#bienestar-estudiantil h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #237ad6;
+}
+
+#bienestar-estudiantil p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+#bienestar-estudiantil ul {
+    list-style: none;
+    text-align: left;
+    padding-left: 20px;
+}
+
+#bienestar-estudiantil li {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #777;
+}
+
+#bienestar-estudiantil li strong {
+    color: #333;
+}
+
+/* Estilos para el contenedor */
+.contenedorBE {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Estilos para los enlaces dentro de los elementos li */
+#bienestar-estudiantil li a {
+    text-decoration: none;
+    color: #007bff;
+    transition: color 0.3s;
+}
+
+#bienestar-estudiantil li a:hover {
+    color: #ff6600;
+}
+
+/* Estilos para el párrafo de contacto */
+#bienestar-estudiantil p:last-child {
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+/* Estilos para el botón de contacto */
+#bienestar-estudiantil button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+}
+
+#bienestar-estudiantil button:hover {
+    background-color: #ff6600;
+}
+
+
+
+
+#noticias {
+    background-color: #f2f2f2;
+    text-align: center;
+    padding: 20vh;
+    color: #237ad6;
+}
+
+#noticias h1 {
+    font-size: 36px; /* Aumenta el tamaño del título */
+    margin-bottom: 20px;
+    text-transform: uppercase; /* Texto en mayúsculas */
+}
+
+/* Estilos para cada noticia */
+.noticia {
+    background-image: linear-gradient(to bottom, rgb(191, 233, 237), rgb(42, 175, 232), rgb(191, 233, 237));
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.noticia img {
+    border-radius: 10px;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px; /* Aumenta el espacio inferior de la imagen */
+}
+
+.noticia h3 {
+    font-size: 24px; /* Tamaño del título de la noticia */
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.noticia p {
+    font-size: 18px; /* Tamaño del contenido de la noticia */
+    color: #4d4c4c;
+    margin-bottom: 20px; /* Aumenta el espacio inferior del párrafo */
+    text-align: justify;
+    padding: 0.5em;
+}
+
+.noticia a {
+    text-decoration: none;
+    color: #007bff;
+    transition: color 0.3s;
+}
+
+.noticia a:hover {
+    color: #ff6600;
+}
+
+/* Contenedor del contenido de noticias */
+.contenedor {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    margin-left: 2vh;
+    margin-right: 2vh;
+}
+
+
+
+
+#contacto {
+    background-color: #f2f2f2;
+    padding: 20vh;
+    text-align: center;
+  }
+  
+  .form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin: 0 auto;
+    width: 80%;
+    max-width: 400px;
+  }
+  
+  .form h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .form p {
+    text-align: left;
+    margin-bottom: 15px;
+  }
+  
+  .form input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  .form button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 3px;
+  }
+  
+  .div-contact {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+  
+  .div-contact .fa {
+    margin-right: 10px;
+    color: #007bff;
+  }
+  
+  .redes-sociales {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .redes-sociales a {
+    color: #007bff;
+    text-decoration: none;
+    margin-right: 20px;
+    font-size: 24px;
+  }
+  
+  .redes-sociales i {
+    margin-right: 5px;
+  }
+
+
+
+/* Estilos para la sección de ubicación */
+#ubicacion {
+    background-color: #f2f2f2;
+    padding: 20vh;
+    text-align: center;
+}
+
+#ubicacion h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #237ad6;
+}
+
+#ubicacion hr {
+    width: 50%;
+    margin: 0 auto 20px;
+    border-color: #333;
+}
+
+/* Estilos para el mapa (ajusta el tamaño según tus necesidades) */
+#ubicacion iframe {
+    border: none;
+    width: 100%;
+    max-width: 800px; /* Controla el ancho máximo del mapa */
+    height: 450px;
+    margin: 0 auto;
+}
+
+/* Estilos para el pie de página */
+footer {
+    background-color: #e95555;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Estilos para el contenedor dentro de la sección y el footer */
+.contenedor {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    margin-left: 2vh;
+    margin-right: 2vh;
+}
+
+/* Alineación del texto en el footer */
+footer p {
+    margin: 0;
+    font-size: 14px;
+    text-align: center;
+}

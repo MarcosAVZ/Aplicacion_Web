@@ -57,7 +57,7 @@ if ($conexion->connect_errno) {
                     Pagos
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="cuotas/Pagos.php">Lista Pagos</a></li>
+                    <li><a class="dropdown-item" href="Cuotas/Pagos.php">Lista Pagos</a></li>
                     <li><a class="dropdown-item" href="Cuotas/cuotas.php">Estado Pagos</a></li>
                     <li><a class="dropdown-item" href="montoCuota.php">Actualizar precios</a></li>
                 </ul>
@@ -66,7 +66,9 @@ if ($conexion->connect_errno) {
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="cursosHorarios.php">Generar Horario</a></li>
+                    <li><a class="dropdown-item" href="asignarDocente.php">Asignar Docente</a></li>
                     <li><a class="dropdown-item" href="relacionarCursoHorario.php">Asignar Curso</a></li>
+                    <li><a class="dropdown-item" href="cargarCursos.php">Agregar Curso</a></li>
                 </ul>
                 <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Matriculación

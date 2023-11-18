@@ -18,47 +18,47 @@
     </a>
     <h1 style="text-align: center; color: #05429f">Sistema de Gestión de Educar para Transformar</h1>
   </header>
-  <?php
-  session_start();
-?>
-  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-    <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Secciones</h5>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-      <div>
-        <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
-      </div>
-      <div class="list-group">
         <?php
-        if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
+        session_start();
         ?>
-        <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
-        <?php  
-        }else{
-          ?>
-        <a href="padre.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
-        <?php 
-        }
-        ?>
-        <a href="horarioHijo.php" class="list-group-item list-group-item-action">Horarios</a>
-        <a href="boletinHijo.php" class="list-group-item list-group-item-action">Boletín</a>
-        <a href="PassPadre.php" class="list-group-item list-group-item-action">Cambiar Contraseña</a>
-        <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Pagos
-        </a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="cuotaPago/cuotasPagadas.php">Cuotas Pagadas</a></li>
-          <li><a class="dropdown-item" href="cuotaPago/pagar_cuota.php">Cuotas Pendientes</a></li>
-        </ul>
-      </div>
-      <a href="..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
-    </div>
-  </div>
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Secciones</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div>
+                    <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
+                </div>
+                <div class="list-group">
+                    <?php
+                    if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
+                    ?>
+                        <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active">Página Principal</a>
+                    <?php
+                    } else {
+                    ?>
+                        <a href="padre.php" class="list-group-item list-group-item-action active">Página Principal</a>
+                    <?php
+                    }
+                    ?>
+                    <a href="horarioHijo.php" class="list-group-item list-group-item-action"> Horarios</a>
+                    <a href="boletinHijo.php" class="list-group-item list-group-item-action">Boletín</a>
+                    <a href="PassPadre.php" class="list-group-item list-group-item-action" aria-current="true">Cambiar Contraseña</a>
+                    <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Pagos
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="cuotaPago/cuotasPagadas.php">Cuotas Pagadas</a></li>
+                        <li><a class="dropdown-item" href="cuotaPago/pagar_cuota.php">Cuotas Pendientes</a></li>
+                    </ul>
+                </div>
+                <a href="..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
+            </div>
+        </div>
   <!-- Termina el bloque de código del sidebar -->
 
-  <?php
+    <?php
   
   include '../Conexion.php';
 
@@ -109,10 +109,11 @@ $mesesEnEspanol = [
 setlocale(LC_TIME, 'es_ES');
 
 // Obtener el nombre completo del mes en inglés
-$mesEnIngles = strftime("%B");
+$mesEnIngles = date("F");
 $anoActual = date("Y");
 // Obtener el nombre del mes en español a partir del mapeo
 $mesActual = $mesesEnEspanol[$mesEnIngles];
+
 
 
   $sqlMontoCuota = "SELECT monto FROM montos_cuota WHERE id = 1";
@@ -142,12 +143,12 @@ $mesActual = $mesesEnEspanol[$mesEnIngles];
         $estadoCuota = "pendiente"; // Puedes cambiar el estado inicial
 
         // Consultar los alumnos asociados a este padre
-        $sqlAlumnos = "SELECT idAlumno FROM cuotas WHERE id_padre = $idPadre";
+        $sqlAlumnos = "SELECT id FROM alumno WHERE idPadre = $idPadre";
         $resultAlumnos = $conn->query($sqlAlumnos);
 
         if ($resultAlumnos->num_rows > 0) {
           while ($rowAlumno = $resultAlumnos->fetch_assoc()) {
-            $idAlumno = $rowAlumno["idAlumno"];
+            $idAlumno = $rowAlumno["id"];
 
             // Verificar si ya existe una cuota para este alumno en el mes actual
             $sqlCuotaExistente = "SELECT id FROM cuotas WHERE id_padre = $idPadre AND idAlumno = $idAlumno AND mes = '$mesActual' AND año = $anoActual";
@@ -172,6 +173,7 @@ $mesActual = $mesesEnEspanol[$mesEnIngles];
   // Cerrar la conexión a la base de datos
   $conn->close();
   ?>
+
 
   <div class="card form-container mx-auto p-2 mt-3" style="width: 60vw">
     <p>

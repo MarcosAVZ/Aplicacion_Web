@@ -1,12 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <link rel="stylesheet" href="../Css/styles.css">
   <title>Formulario de Horarios</title>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .form-container {
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-top: 50px;
+    }
+
+    .btn-green {
+      background-color: #28a745;
+      color: #ffffff;
+    }
+
+    .btn-green:hover {
+      background-color: #218838;
+    }
+  </style>
 </head>
 
 <body>
@@ -20,11 +43,11 @@
   </header>
 
   <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasExampleLabel">Secciones</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-                <div class="offcanvas-body">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Secciones</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+            <div class="offcanvas-body">
             <div>
                 <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
             </div>
@@ -70,73 +93,48 @@
             </div>
             <a href="..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
         </div>
-    </div>
+  </div>
   <!-- Termina el bloque de código del sidebar -->
 
-  <div class="card form-container mx-auto p-2 mt-3" style="width: 500px">
-    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-      <h5 class="formlabel" for="dia">Día:</h5>
-      <select class="form-select mb-3" id="dia" name="dia">
-        <option value="lunes">Lunes</option>
-        <option value="martes">Martes</option>
-        <option value="miercoles">Miércoles</option>
-        <option value="jueves">Jueves</option>
-        <option value="viernes">Viernes</option>
-        <option value="sabado">Sábado</option>
-      </select>
-      <h5 class="formlabel" for="horaInicio">Hora de inicio:</h5>
-      <input class="form-control timepicker" type="time" id="horaInicio" name="horaInicio"><br>
+  <div class="container mt-3">
+    <div class="card form-container mx-auto p-4" style="width: 500px;">
+      <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+        <h5 class="form-label" for="nombre">Nombre del curso:</h5>
+        <input class="form-control mb-3" type="text" id="nombre" name="nombre" required>
 
-      <h5 class="formlabel" for="horaFin">Hora de fin:</h5>
-      <input class="form-control" type="time" id="horaFin" name="horaFin"><br>
+        <button class="btn btn-green btn-lg btn-block" type="submit">Guardar</button>
+      </form>
+    </div>
+    <?php
+    include '../Conexion.php';
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $nombre = $_POST['nombre'];
+        $conn = conectar();
 
-      <h5 class="formlabel" for="Aula">Aula:</h5>
-      <input class="form-control" type="text" id="Aula" name="Aula"><br>
+        if (!$conn) {
+            die("Error al conectar a la base de datos: " . mysqli_connect_error());
+        }
 
-      <input class="btn btn-primary" type="submit" value="Guardar">
-    </form>
+        $query = "INSERT INTO curso (nombre) VALUES ('$nombre')";
+
+        if (mysqli_query($conn, $query)) {
+            echo "<div class='alert alert-success mt-3' role='alert'>El curso se ha insertado correctamente.</div>";
+        } else {
+            echo "<div class='alert alert-danger mt-3' role='alert'>Error al insertar el curso: " . mysqli_error($conn) . "</div>";
+        }
+
+        mysqli_close($conn);
+    }
+    ?>
   </div>
 
-  <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $dia = $_POST["dia"];
-    $horaInicio = $_POST["horaInicio"];
-    $horaFin = $_POST["horaFin"];
-    $Aula = $_POST["Aula"];
-    
-    // Validar que los campos no estén vacíos
-    if (empty($dia) || empty($horaInicio) || empty($horaFin) || empty($Aula)) {
-        echo "<div class='alert alert-danger' role='alert'>Por favor, complete todos los campos.</div>";
-    } else {
-        // Conexión a la base de datos
-        include '../Conexion.php';
-    
-        // Conectarse a la base de datos
-        $conn = conectar();
-    
-        // Verificar la conexión
-        if ($conn->connect_error) {
-            die("Error de conexión: " . $conn->connect_error);
-        }
-    
-        // Consulta para insertar los datos en la tabla de horarios
-        $sql = "INSERT INTO horario (dia, horaInicio, horaFin, Aula) VALUES ('$dia', '$horaInicio', '$horaFin', '$Aula')";
-    
-        if ($conn->query($sql) === TRUE) {
-            echo "<div class='alert alert-success' role='alert'>Horario guardado exitosamente.</div>";
-        } else {
-            echo "<div class='alert alert-danger' role='alert'>Error al guardar el horario: " . $conn->error . "</div>";
-        }
-    
-        // Cerrar la conexión
-        $conn->close();
-    }
-}
-?>
-  <div id="footer">
+  <div id="footer" class="text-center mt-3">
     <img src="../Css/Logotipo200x200.png">
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 </html>

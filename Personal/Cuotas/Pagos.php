@@ -33,16 +33,16 @@
                 session_start();
                 if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
                 ?>
-                <a href="../../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <a href="../../Autoridad/autoridad.php" class="list-group-item list-group-item-action" aria-current="true">Página Principal</a>
                 <?php  
                 }else{
                 ?>
-                <a href="../personal.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <a href="../personal.php" class="list-group-item list-group-item-action" aria-current="true">Página Principal</a>
                 <?php 
                 }
             ?>
                 <a href="../totalAlumnos.php" class="list-group-item list-group-item-action">Alumnos</a>
-                <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="dropdown-toggle list-group-item list-group-item-action active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Pagos
                 </a>
                 <ul class="dropdown-menu">
@@ -55,7 +55,9 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="../cursosHorarios.php">Generar Horario</a></li>
+                    <li><a class="dropdown-item" href="../asignarDocente.php">Asignar Docente</a></li>
                     <li><a class="dropdown-item" href="../relacionarCursoHorario.php">Asignar Curso</a></li>
+                    <li><a class="dropdown-item" href="cargarCursos.php">Agregar Curso</a></li>
                 </ul>
                 <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Matriculación

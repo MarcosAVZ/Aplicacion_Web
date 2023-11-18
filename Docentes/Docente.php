@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <link rel="stylesheet" href="../Css/styles.css">
-  <title>Área del Docente</title>
+  <title>Área de Docente</title>
 </head>
 
 <body>
@@ -42,16 +42,16 @@
                 }
             ?>
         <a href="listaAlumnos.php" class="list-group-item list-group-item-action">Alumnos</a>
-        <a href="AulasDesig.php" class="list-group-item list-group-item-action">Aula Designada</a>
-        <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Exámenes
-        </a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="calificar.php">Crear Instancia Examen</a></li>
-          <li><a class="dropdown-item" href="calificar2.php">Cargar Notas</a></li>
-        </ul>
-      </div>
-      <a href="..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
+                <a href="AulasDesig.php" class="list-group-item list-group-item-action">Aula Designada</a>
+                <a class="dropdown-toggle list-group-item list-group-item-action active" aria-current="true" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Exámenes
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="calificar.php">Crear Instancia Examen</a></li>
+                    <li><a class="dropdown-item" href="calificar2.php">Cargar Notas</a></li>
+                </ul>
+            </div>
+            <a href="..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
     </div>
   </div>
   <!-- Termina el bloque de código del sidebar -->

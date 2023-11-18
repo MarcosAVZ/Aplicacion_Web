@@ -43,6 +43,7 @@
             ?>
         <a href="PassAlumno.php" class="list-group-item list-group-item-action">Cambiar Contraseña</a>
         <a href="horarios.php" class="list-group-item list-group-item-action">Horarios</a>
+        <a href="matricularCurso.php" class="list-group-item list-group-item-action">Matricularse</a>
         <a href="boletin.php" class="list-group-item list-group-item-action">Boletín</a>
       </div>
       <a href="..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
@@ -66,10 +67,10 @@
     $nombreAlumno = $row['nombre'];
 
     // Imprimir el mensaje de bienvenida
-    echo "<h2>Hola $nombreAlumno, bienvenido.<h2>";
+    echo "<h2>Hola $nombreAlumno, bienvenido.</h2>";
   } else {
     // Si el usuario no está autenticado, redirigir al archivo de inicio de sesión
-    header('Location: index2.php');
+    header('Location: ../index2.php');
     exit();
   }
   ?>
@@ -89,7 +90,6 @@
   </div>
   <div class="card form-container mx-auto p-2 mt-3" style="width: 60vw">
     <p>
-
       El <b>Centro Educativo - Educar Para Transformar - Resistencia</b> pone a disposición de la comunidad educativa este"Entorno Virtual".<br>
 
       El objetivo es servir de base para el desarrollo de actividades on - line.<br>

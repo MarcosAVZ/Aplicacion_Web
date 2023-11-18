@@ -20,7 +20,7 @@
   </header>
   <?php
   session_start();
-?>
+  ?>
   <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasExampleLabel">Secciones</h5>
@@ -30,13 +30,21 @@
       <div>
         <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
       </div>
-        <a href="../Personal/personal.php" class="list-group-item list-group-item-action active" aria-current="true">Seccion del Personal</a>
-        <a href="../Docentes/Docente.php" class="list-group-item list-group-item-action active" aria-current="true">Seccion del Docente</a>
-        <a href="../Padre/padre.php" class="list-group-item list-group-item-action active" aria-current="true">Seccion del Padre</a>
-        <a href="../Alumno/Alumno.php" class="list-group-item list-group-item-action active" aria-current="true">Seccion del Alumno</a>
+      <div class="list-group">
+        <a href="../Personal/personal.php" class="list-group-item list-group-item-action">Seccion del Personal</a>
+        <a href="../Docentes/Docente.php" class="list-group-item list-group-item-action">Seccion del Docente</a>
+        <a href="../Padre/padre.php" class="list-group-item list-group-item-action">Seccion del Padre</a>
+        <a href="../Alumno/Alumno.php" class="list-group-item list-group-item-action">Seccion del Alumno</a>
       </div>
       <a href="..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
     </div>
+  </div>
+  <div class="card form-container mx-auto p-2 mt-3" style="width: 60vw">
+    <p>
+      Ingresó como <b>Administrador</b>, seleccione desde la barra lateral cualquier sección de la página para ver.<br>
+
+      Al ingresar a una sección particular asumirá el rol correspondiente para ver lo mismo que un usuario de dicha categoría.
+    </p>
   </div>
   <div class="card form-container mx-auto p-2 mt-3" style="width: 60vw">
     <p>
@@ -61,6 +69,8 @@
       Desarrollado por Almenar Ignacio y Avanzatti Marcos para la carrera de Tecnicatura Universitaria en Programación de la UTN FRRe.
     </p>
   </div>
+
+
 
   <div id="footer">
     <img src="../Css/Logotipo200x200.png">

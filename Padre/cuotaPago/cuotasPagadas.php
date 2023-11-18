@@ -33,16 +33,17 @@
             session_start();
                 if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
                 ?>
-                <a href="../../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <a href="../../Autoridad/autoridad.php" class="list-group-item list-group-item-action " aria-current="true">Página Principal</a>
                 <?php  
                 }else{
                 ?>
-                <a href="../padre.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <a href="../padre.php" class="list-group-item list-group-item-action " aria-current="true">Página Principal</a>
                 <?php 
                 }
             ?>
                 <a href="../horarioHijo.php" class="list-group-item list-group-item-action">Horarios</a>
                 <a href="../boletinHijo.php" class="list-group-item list-group-item-action">Boletín</a>
+                <a href="../PassPadre.php" class="list-group-item list-group-item-action">Cambiar Contraseña</a>
                 <a class="dropdown-toggle list-group-item list-group-item-action active" aria-current="true" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Pagos
                 </a>

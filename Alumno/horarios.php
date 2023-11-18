@@ -29,20 +29,22 @@
                 <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
             </div>
             <div class="list-group">
-            <?php  
+                <?php
                 session_start();
                 if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
                 ?>
-                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action" aria-current="true">Página Principal</a>
                 <?php  
                 }else{
                 ?>
-                <a href="Alumno.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <a href="Alumno.php" class="list-group-item list-group-item-action" aria-current="true">Página Principal</a>
                 <?php 
                 }
             ?>
-                <a href="horarios.php" class="list-group-item list-group-item-action active" aria-current="true">Horarios</a>
-                <a href="boletin.php" class="list-group-item list-group-item-action">Boletín</a>
+        <a href="PassAlumno.php" class="list-group-item list-group-item-action">Cambiar Contraseña</a>
+        <a href="horarios.php" class="list-group-item list-group-item-action active">Horarios</a>
+        <a href="matricularCurso.php" class="list-group-item list-group-item-action">Matricularse</a>
+        <a href="boletin.php" class="list-group-item list-group-item-action">Boletín</a>
             </div>
             <a href="..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
         </div>

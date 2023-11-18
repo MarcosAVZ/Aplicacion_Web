@@ -29,7 +29,7 @@
                 <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
             </div>
             <div class="list-group">
-            <?php  
+                <?php  
                 session_start();
                 if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
                 ?>
@@ -58,11 +58,17 @@
 
     <?php
 
+
 // Verificar si el docente ha iniciado sesión
 if (isset($_SESSION['user_id'])) {
     // Obtener el ID del docente de la variable de sesión
     $docenteId = $_SESSION['user_id'];
-
+ } else {
+    // Si el usuario no está autenticado, redirigir al archivo de inicio de sesión
+    header('Location: Docente.php');
+    exit();
+  }
+    // Obtener el ID del docente de la sesión
 
     // Obtener las materias vinculadas al docente desde la base de datos
     include '../Conexion.php';
@@ -82,11 +88,7 @@ if (isset($_SESSION['user_id'])) {
         JOIN docente AS d ON cd.idDocente = d.id
         WHERE d.id = '$docenteId'";
     $result = $conn->query($sql);
-    } else {
-    // Si el usuario no está autenticado, redirigir al archivo de inicio de sesión
-    header('Location: Docente.php');
-    exit();
-     }
+
     // Verificar si se encontraron materias
     if ($result->num_rows > 0) {
         // Materias encontradas, generar opciones para el elemento select
@@ -96,9 +98,6 @@ if (isset($_SESSION['user_id'])) {
             $nombreMateria = $row['nombre'];
             $options .= "<option value='$idMateria'>$nombreMateria</option>";
         }
-    } else {
-        // No se encontraron materias vinculadas al docente
-        $options = "<option value='' disabled selected>No hay materias disponibles</option>";
     }
 
     // Cerrar la conexión a la base de datos
@@ -130,12 +129,12 @@ if (isset($_SESSION['user_id'])) {
         // Cerrar la conexión a la base de datos
         $conn->close();
     }
-    ?>
+?>
 
     <!-- Formulario HTML -->
     <div class="card form-container mx-auto p-2 mt-3" style="width: 500px">
         <form method="POST" action="">
-            <h5 lcass="form-label" for="nombre_examen">Nombre del examen:</h5>
+            <h5 class="form-label" for="nombre_examen">Nombre del examen:</h5>
             <input class="form-control" type="text" name="nombre_examen" required><br>
 
             <h5 class="form-label" for="id_materia">Materia:</h5>

@@ -33,16 +33,17 @@
             session_start();
                 if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
                 ?>
-                <a href="../../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <a href="../../Autoridad/autoridad.php" class="list-group-item list-group-item-action">Página Principal</a>
                 <?php  
                 }else{
                 ?>
-                <a href="../padre.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <a href="../padre.php" class="list-group-item list-group-item-action">Página Principal</a>
                 <?php 
                 }
             ?>
                 <a href="../horarioHijo.php" class="list-group-item list-group-item-action">Horarios</a>
                 <a href="../boletinHijo.php" class="list-group-item list-group-item-action">Boletín</a>
+                <a href="../PassPadre.php" class="list-group-item list-group-item-action">Cambiar Contraseña</a>
                 <a class="dropdown-toggle list-group-item list-group-item-action active" aria-current="true" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Pagos
                 </a>
@@ -60,41 +61,41 @@
         <a class="btn btn-primary" href="procesar_pago.php">Realizar Pago</a>
         <?php
         // Conexión a la base de datos (asegúrate de tener configurada la conexión)
-        require '../../conexion.php';
+        require '../../Conexion.php';
         $conexion = conectar();
         if (isset($_SESSION['user_id'])) {
             $id_padre = $_SESSION['user_id'];
 
-        // Verifica la conexión
-        if (!$conexion) {
-            die("La conexión a la base de datos falló: " . mysqli_connect_error());
-        }
+            // Verifica la conexión
+            if (!$conexion) {
+                die("La conexión a la base de datos falló: " . mysqli_connect_error());
+            }
 
-        // Consulta SQL para actualizar el estado de las cuotas
-        $sql = "UPDATE cuotas AS c
-        SET c.estado = 'pagado'
-        WHERE 
-            (SELECT SUM(p.montoPago) FROM pago AS p WHERE p.idCuota = c.id) >= c.monto";
+            // Consulta SQL para actualizar el estado de las cuotas
+            $sql = "UPDATE cuotas AS c
+            SET c.estado = 'pagado'
+            WHERE 
+                (SELECT SUM(p.montoPago) FROM pago AS p WHERE p.idCuota = c.id) >= c.monto";
 
-        if (mysqli_query($conexion, $sql)) {
-            echo "<small class='text-body-secondary'>Estado de las cuotas actualizado correctamente.</small>";
-        } else {
-            echo "<small class='text-body-secondary'>Error al actualizar el estado de las cuotas: </small>" . mysqli_error($conexion);
-        }
+            if (mysqli_query($conexion, $sql)) {
+                echo "<small class='text-body-secondary'>Estado de las cuotas actualizado correctamente.</small>";
+            } else {
+                echo "<small class='text-body-secondary'>Error al actualizar el estado de las cuotas: </small>" . mysqli_error($conexion);
+            }
 
-        // Consulta SQL para obtener las cuotas pendientes del padre con monto pendiente
-        $sql = "SELECT c.id, c.mes, (c.monto - IFNULL(SUM(p.montoPago), 0)) AS monto_pendiente
+            // Consulta SQL para obtener las cuotas pendientes del padre con monto pendiente
+            $sql = "SELECT c.id, c.idAlumno, c.mes, (c.monto - IFNULL(SUM(p.montoPago), 0)) AS monto_pendiente
         FROM cuotas AS c
         LEFT JOIN pago AS p ON c.id = p.idCuota
         WHERE c.id_padre = $id_padre AND c.estado = 'pendiente'
-        GROUP BY c.id, c.mes, c.monto";
+        GROUP BY c.id, c.idAlumno, c.mes, c.monto";
 
-        // Ejecuta la consulta y obtiene los resultados
-        $resultado = mysqli_query($conexion, $sql);
+            // Ejecuta la consulta y obtiene los resultados
+            $resultado = mysqli_query($conexion, $sql);
         } else {
-        // Si no se ha iniciado sesión, puedes redirigir al usuario a la página de inicio de sesión
-        header('Location: padre.php');
-        exit();
+            // Si no se ha iniciado sesión, puedes redirigir al usuario a la página de inicio de sesión
+            header('Location: padre.php');
+            exit();
         }
         if ($resultado) {
             // Inicializa un arreglo para almacenar las cuotas
@@ -116,12 +117,17 @@
     <div class="mt-2 mx-auto p-2" style="width: 90vw">
         <table class="table table-striped table-bordered">
             <tr class="table-info">
+                <th>Alumno</th>
                 <th>Mes</th>
                 <th>Monto Pendiente</th>
             </tr>
             <?php
             foreach ($cuotas as $cuota) {
                 echo '<tr>';
+                // Obtener el nombre del alumno
+                $id_alumno = $cuota['idAlumno']; // Asegúrate de tener el campo idAlumno en tu tabla cuotas
+                $nombre_alumno = obtenerNombreAlumno($id_alumno);
+                echo '<td>' . $nombre_alumno . '</td>';
                 echo '<td>' . $cuota['mes'] . '</td>';
                 echo '<td>$' . $cuota['monto_pendiente'] . '</td>';
                 echo '</tr>';
@@ -129,14 +135,17 @@
             ?>
         </table>
 
-    <!-- Botón para imprimir tabla -->
+        <!-- Botón para imprimir tabla -->
     </div>
+
     <a class="no-print ms-3" type='button' onclick='imprimirTabla()'><img src='../../Css/print.png' width='50px'></a>
     <div id="footer">
         <img src="../../Css/Logotipo200x200.png">
     </div>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<!-- ... (código posterior) -->
+
 <!-- Script para imprimir la tabla -->
 <script>
     function imprimirTabla() {
@@ -144,4 +153,28 @@
     }
 </script>
 
+<?php
+// Función para obtener el nombre del alumno
+function obtenerNombreAlumno($id_alumno)
+{
+    
+    $conexion = conectar();
+    $sql = "SELECT nombre FROM alumno WHERE id = $id_alumno";
+    $resultado = mysqli_query($conexion, $sql);
+
+    if ($resultado) {
+        $fila = mysqli_fetch_assoc($resultado);
+        return $fila['nombre'];
+    } else {
+        die("Error al ejecutar la consulta: " . mysqli_error($conexion));
+    }
+}
+?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<!-- Script para imprimir la tabla -->
+<script>
+    function imprimirTabla() {
+        window.print();
+    }
+</script>
 </html>

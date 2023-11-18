@@ -29,20 +29,22 @@
                 <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
             </div>
             <div class="list-group">
-            <?php  
-                session_start();
+               <?php 
+               session_start();
                 if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
                 ?>
-                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action" aria-current="true">Página Principal</a>
                 <?php  
                 }else{
                 ?>
-                <a href="Alumno.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <a href="Alumno.php" class="list-group-item list-group-item-action" aria-current="true">Página Principal</a>
                 <?php 
                 }
             ?>
-                <a href="horarios.php" class="list-group-item list-group-item-action">Horarios</a>
-                <a href="boletin.php" class="list-group-item list-group-item-action active" aria-current="true">Boletín</a>
+        <a href="PassAlumno.php" class="list-group-item list-group-item-action">Cambiar Contraseña</a>
+        <a href="horarios.php" class="list-group-item list-group-item-action">Horarios</a>
+        <a href="matricularCurso.php" class="list-group-item list-group-item-action">Matricularse</a>
+        <a href="boletin.php" class="list-group-item list-group-item-action active">Boletín</a>
             </div>
             <a href="..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
         </div>
@@ -100,7 +102,7 @@
                 // Consulta para obtener todas las notas del alumno
                 $sqlNotas = "SELECT e.nombre, ea.nota, c.nombre AS nombre_curso
                      FROM examen e
-                     INNER JOIN examenAlumno ea ON e.id = ea.idExamen
+                     INNER JOIN examenalumno ea ON e.id = ea.idExamen
                      INNER JOIN curso c ON e.idCurso = c.id
                      WHERE ea.idAlumno = $idAlumno";
 
@@ -136,7 +138,7 @@
                 // Consulta para obtener los exámenes y notas del alumno en el curso seleccionado
                 $sqlExamenes = "SELECT e.nombre, ea.nota, c.nombre AS nombre_curso
                         FROM examen e
-                        INNER JOIN examenAlumno ea ON e.id = ea.idExamen
+                        INNER JOIN examenalumno ea ON e.id = ea.idExamen
                         INNER JOIN curso c ON e.idCurso = c.id
                         WHERE ea.idAlumno = $idAlumno AND e.idCurso = $idCursoSeleccionado";
 

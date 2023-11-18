@@ -1,0 +1,141 @@
+/* Reset de estilos básicos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+    font-family: Arial, sans-serif;
+    background-color: #ddf9f4;
+}
+
+.row.galeria-title {
+    margin-top: 2vh;
+    background-color:  #f5f097;
+    width: 100%;
+    color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 6px 10px -5px rgba(0,0,0,.6);
+}
+
+.titulo {
+    font-size: 55px;
+    text-transform: uppercase;
+    letter-spacing: 7px;
+   
+}
+
+.galeria img {
+    box-shadow: 0 8px 10px -4px rgba(0,0,0,.6);
+    border-radius: 15px;
+}
+
+.materialbox-caption {
+    bottom: 30px;
+    right: 0;
+    width: 40%;
+    height: auto;
+    padding: 10px;
+    margin: auto;
+    background: #000;
+    box-shadow: 5px 5px #fff;
+    font-size: 20px;
+    color: #fff;
+    line-height: 28px;
+}
+
+.galeria .col {
+    margin-bottom: 20px;
+}
+
+.btn-flat{
+    margin: 0 auto;
+}
+
+
+@media screen and (max-width: 600px){
+    .materialbox-caption {
+         width: 90%;
+    }
+}
+
+@media screen and (max-width: 992px){
+    .materialbox-caption {
+         width: 70%;
+    }
+}
+
+/* lo viejo */
+/* header {
+    background-color: #f75ac8;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    justify-items: center;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+}
+
+.imagen {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease-in-out;
+}
+
+.imagen:hover img {
+    transform: scale(1.05);
+} */
+
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.contenedor {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    margin-left: 2vh;
+    margin-right: 2vh;
+}
+
+footer p {
+    margin: 0;
+    font-size: 14px;
+    text-align: center;
+}
