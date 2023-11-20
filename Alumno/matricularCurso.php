@@ -79,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Fin de la barra lateral -->
 
     <!-- Contenido principal -->
-    <div class="card form-container mx-auto p-2 mt-3" style="width: 500px">
+    <div class="card form-container mx-auto p-2 mt-3 card-width">
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
             <input type="hidden" name="alumno_id" value="<?php echo $alumno_id; ?>">
 

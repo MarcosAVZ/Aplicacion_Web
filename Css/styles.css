@@ -103,3 +103,22 @@ body {
                 Error al subir el archivo del comprobante.
               </div>";
               */
+
+/* Para vista en celular */
+
+.card-width {
+  width: 500px;
+}
+
+@media (max-width: 575.98px){
+  .card-width{
+      width: 350px;
+  }
+  .form-inline{
+    display: flex;
+    flex-direction: row;
+  }
+  .form-group {
+    margin-bottom: 10px;
+  }
+}

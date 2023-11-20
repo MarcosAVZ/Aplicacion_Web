@@ -29,18 +29,18 @@
                 <img src="../../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
             </div>
             <div class="list-group">
-            <?php  
+                <?php
                 session_start();
                 if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
                 ?>
-                <a href="../../Autoridad/autoridad.php" class="list-group-item list-group-item-action" aria-current="true">Página Principal</a>
-                <?php  
-                }else{
+                    <a href="../../Autoridad/autoridad.php" class="list-group-item list-group-item-action">Página Principal</a>
+                <?php
+                } else {
                 ?>
-                <a href="../personal.php" class="list-group-item list-group-item-action" aria-current="true">Página Principal</a>
-                <?php 
+                    <a href="../personal.php" class="list-group-item list-group-item-action">Página Principal</a>
+                <?php
                 }
-            ?>
+                ?>
                 <a href="../totalAlumnos.php" class="list-group-item list-group-item-action">Alumnos</a>
                 <a class="dropdown-toggle list-group-item list-group-item-action active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Pagos
@@ -70,7 +70,6 @@
             </div>
         </div>
         <a href="..\..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
-    </div>
     </div>
     <!-- Termina el bloque de código del sidebar -->
 
@@ -145,9 +144,12 @@
 
                 <input class="btn btn-primary ms-2 no-print" type="submit" value="Filtrar">
             </div>
+
         </form>
     </div>
-    <div class="mt-2 mx-auto p-2" style="width: 90vw">
+
+
+    <div class="mt-2 mx-auto p-2" style="width: 90vw; overflow-x:auto">
         <table class="table table-striped table-bordered">
             <tr class="table-info">
                 <th>Correo del Padre</th>

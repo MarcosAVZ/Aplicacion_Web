@@ -87,7 +87,7 @@
                         <option value="<?php echo $row['id']; ?>"><?php echo $row['nombre']; ?></option>
                     <?php endwhile; ?>
                 </select>
-                <button class="ms-1 btn btn-primary" type="submit">Mostrar exámenes y notas</button>
+                <button class="ms-1 btn btn-primary" type="submit">Mostrar</button>
             </div>
         </form>
     </div>

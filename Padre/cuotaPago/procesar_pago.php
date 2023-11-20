@@ -90,7 +90,7 @@
     $result = mysqli_query($conn, $query);
     ?>
 
-    <div class="card form-container mx-auto p-2 mt-3" style="width: 500px">
+    <div class="card form-container mx-auto p-2 mt-3 card-width">
         <form action="procesar_pago.php" method="post" enctype="multipart/form-data">
             <div class="form-row">
                 <label class="h6">Monto Pago:</label>
@@ -181,7 +181,7 @@
             mysqli_stmt_close($stmt);
         } else {
             echo "
-                <div class=\"alert mx-auto\" style=\"width: 500px\">
+                <div class=\"alert mx-auto card-width\" >
                 <span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span>
                 Error al subir el archivo del comprobante.
               </div>";

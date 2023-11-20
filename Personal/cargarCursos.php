@@ -97,12 +97,12 @@
   <!-- Termina el bloque de código del sidebar -->
 
   <div class="container mt-3">
-    <div class="card form-container mx-auto p-4" style="width: 500px;">
+    <div class="card form-container mx-auto p-4 card-width">
       <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
         <h5 class="form-label" for="nombre">Nombre del curso:</h5>
         <input class="form-control mb-3" type="text" id="nombre" name="nombre" required>
 
-        <button class="btn btn-green btn-lg btn-block" type="submit">Guardar</button>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Guardar</button>
       </form>
     </div>
     <?php

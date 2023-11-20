@@ -43,7 +43,7 @@
             ?>
         <a href="listaAlumnos.php" class="list-group-item list-group-item-action">Alumnos</a>
                 <a href="AulasDesig.php" class="list-group-item list-group-item-action">Aula Designada</a>
-                <a class="dropdown-toggle list-group-item list-group-item-action active" aria-current="true" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Exámenes
                 </a>
                 <ul class="dropdown-menu">

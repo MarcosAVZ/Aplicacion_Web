@@ -33,11 +33,11 @@
                 session_start();
                 if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
                 ?>
-                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action">Página Principal</a>
                 <?php  
                 }else{
                 ?>
-                <a href="Docente.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <a href="Docente.php" class="list-group-item list-group-item-action">Página Principal</a>
                 <?php 
                 }
             ?>
@@ -121,10 +121,16 @@ if (isset($_SESSION['user_id'])) {
         $sql = "INSERT INTO examen (nombre, idCurso, idDocente) VALUES ('$nombreExamen', '$idMateria', '$docenteId')";
 
         if ($conn->query($sql) === true) {
-            echo "El examen se ha guardado correctamente.";
-        } else {
-            echo "Error al guardar el examen: " . $conn->error;
-        }
+            echo "<div class=\"alert-success mx-auto card-width\">
+                    <span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span>
+                    El examen se ha guardado correctamente.
+                  </div>";
+                } else {
+                    echo "<div class=\"alert mx-auto card-width\">
+                    <span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span>
+                    Error al actualizar lista de exámenes: " . $conn->error . "
+                  </div>";
+                }
 
         // Cerrar la conexión a la base de datos
         $conn->close();
@@ -132,7 +138,7 @@ if (isset($_SESSION['user_id'])) {
 ?>
 
     <!-- Formulario HTML -->
-    <div class="card form-container mx-auto p-2 mt-3" style="width: 500px">
+    <div class="card form-container mx-auto p-2 mt-3 card-width">
         <form method="POST" action="">
             <h5 class="form-label" for="nombre_examen">Nombre del examen:</h5>
             <input class="form-control" type="text" name="nombre_examen" required><br>

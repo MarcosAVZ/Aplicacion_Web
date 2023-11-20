@@ -113,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
     <!-- Termina el bloque de código del sidebar -->
 
-    <div class="card form-container mx-auto p-2 mt-3" style="width: 500px">
+    <div class="card form-container mx-auto p-2 mt-3 card-width">
         <form action="MatricularPadre.php" method="post">
             <div class="form-row">
                 <label class="h5" for="correo">Correo:</label>

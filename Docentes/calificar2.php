@@ -42,18 +42,18 @@
         <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
       </div>
       <div class="list-group">
-        <?php  
-                session_start();
-                if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
-                ?>
-                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
-                <?php  
-                }else{
-                ?>
-                <a href="Docente.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
-                <?php 
-                }
-            ?>
+        <?php
+        session_start();
+        if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
+        ?>
+          <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+        <?php
+        } else {
+        ?>
+          <a href="Docente.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+        <?php
+        }
+        ?>
         <a href="listaAlumnos.php" class="list-group-item list-group-item-action">Alumnos</a>
         <a href="AulasDesig.php" class="list-group-item list-group-item-action">Aula Designada</a>
         <a class="dropdown-toggle list-group-item list-group-item-action  active" aria-current="true" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -103,7 +103,7 @@
                INNER JOIN alumnocurso ac ON a.id = ac.idAlumno
                WHERE ac.idCurso = $cursoId";
 
-     $resultAlumnos = $conn->query($sqlAlumnos);
+    $resultAlumnos = $conn->query($sqlAlumnos);
   }
 
   // Obtener alumnos vinculados al curso seleccionado
@@ -111,33 +111,42 @@
     $alumnoId = $_POST['alumno'];
     $examenId = $_POST['examen'];
     $nota = $_POST['nota'];
-    
+
     // Verificar si ya existe una calificación para este alumno y examen
     $sqlVerificar = "SELECT * FROM examenalumno WHERE idAlumno = $alumnoId AND idExamen = $examenId";
     $resultVerificar = $conn->query($sqlVerificar);
 
     if ($resultVerificar->num_rows > 0) {
-        echo "Error: Este alumno ya fue calificado en este examen.";
+      echo "Error: Este alumno ya fue calificado en este examen.";
     } else {
-        // Si no hay duplicados, proceder con la inserción
-        $insertQuery = "INSERT INTO examenalumno (idAlumno, idExamen, nota) VALUES (?, ?, ?)";
-        $stmt = $conn->prepare($insertQuery);
+      // Si no hay duplicados, proceder con la inserción
+      $insertQuery = "INSERT INTO examenalumno (idAlumno, idExamen, nota) VALUES (?, ?, ?)";
+      $stmt = $conn->prepare($insertQuery);
 
-        if ($stmt) {
-            $stmt->bind_param("iii", $alumnoId, $examenId, $nota);
+      if ($stmt) {
+        $stmt->bind_param("iii", $alumnoId, $examenId, $nota);
 
-            if ($stmt->execute()) {
-                echo "Los datos se guardaron correctamente en la tabla examenalumno.";
-            } else {
-                echo "Error al guardar los datos: " . $stmt->error;
-            }
-
-            $stmt->close();
+        if ($stmt->execute()) {
+          echo "<div class=\"alert-success mx-auto card-width\">
+              <span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span>
+              Los datos se guardaron correctamente en la tabla examenalumno.
+            </div>";
         } else {
-            echo "Error al preparar la consulta: " . $conn->error;
+          echo "<div class=\"alert mx-auto card-width\">
+              <span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span>
+              Error al actualizar los datos: " . $conn->error . "
+            </div>";
         }
+
+        $stmt->close();
+      } else {
+        echo "<div class=\"alert mx-auto card-width\">
+          <span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span>
+          Error al preparar la consulta: " . $conn->error . "
+        </div>";
+      }
     }
-}
+  }
   ?>
 
   <div class="card form-container mx-auto p-2 mt-3" style="width: 500px">
@@ -191,8 +200,8 @@
           </select>
         </div>
         <br>
-          <h5 for="nota">Nota:</h5>
-          <input class="form-control max-width-input mx-auto p-2" style="padding-left: 50px;" type="number" name="nota" id="nota" placeholder="Ingrese la nota numérica">
+        <h5 for="nota">Nota:</h5>
+        <input class="form-control max-width-input mx-auto p-2" style="padding-left: 50px;" type="number" name="nota" id="nota" placeholder="Ingrese la nota numérica">
         <br><br>
         <input type="submit" class="btn btn-primary" name="submit_examenalumno" value="Guardar">
 

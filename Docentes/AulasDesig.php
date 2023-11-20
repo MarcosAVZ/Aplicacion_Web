@@ -32,11 +32,11 @@
                 session_start();
                 if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
                 ?>
-                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action">Página Principal</a>
                 <?php  
                 }else{
                 ?>
-                <a href="Docente.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <a href="Docente.php" class="list-group-item list-group-item-action">Página Principal</a>
                 <?php 
                 }
             ?>

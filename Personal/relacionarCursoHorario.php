@@ -41,6 +41,11 @@ $conn->close();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="../Css/styles.css">
     <title>Seleccionar Curso y Horario</title>
+
+    <style>
+
+    </style>
+
 </head>
 
 <body>
@@ -65,11 +70,11 @@ $conn->close();
                 session_start();
                 if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
                 ?>
-                    <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action" aria-current="true">Página Principal</a>
+                    <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item">Página Principal</a>
                 <?php
                 } else {
                 ?>
-                    <a href="personal.php" class="list-group-item list-group-item-action" aria-current="true">Página Principal</a>
+                    <a href="personal.php" class="list-group-item list-group-item">Página Principal</a>
                 <?php
                 }
                 ?>
@@ -103,7 +108,8 @@ $conn->close();
         </div>
     </div>
 
-    <div class="card form-container mx-auto p-2 mt-3" style="width: 500px">
+
+    <div class="card form-container mx-auto p-2 mt-3 card-width">
         <h2>Seleccionar Curso y Horario</h2>
         <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <h5 class="formlabel" for="curso">Curso:</h5>

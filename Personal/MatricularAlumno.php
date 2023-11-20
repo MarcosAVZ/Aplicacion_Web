@@ -105,7 +105,7 @@
     </div>
     <!-- Termina el bloque de código del sidebar -->
 
-    <div class="card form-container mx-auto p-2 mt-3" style="width: 500px">
+    <div class="card form-container mx-auto p-2 mt-3 card-width">
         <?php
         // Incluir el archivo de conexión
 require_once '../Conexion.php';

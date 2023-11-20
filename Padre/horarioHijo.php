@@ -57,7 +57,7 @@
     </div>
     <!-- Termina el bloque de código del sidebar -->
 
-    <div class="mx-auto p-2" style="width: 90vw">
+    <div class="mx-auto p-2" style="width: 90vw; overflow-x:auto">
         <?php
         // Conexión a la base de datos
         include '../Conexion.php';

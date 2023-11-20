@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Fin de la barra lateral -->
 
     <!-- Contenido principal -->
-    <div class="card form-container mx-auto p-2 mt-3" style="width: 500px">
+    <div class="card form-container mx-auto p-2 mt-3 card-width">
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
             <h2>Matricular Docente en Cursos</h2>
 
@@ -132,13 +132,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input class="btn btn-primary mt-2" type="submit" value="Matricular en Curso">
         </form>
 
-        <!-- Mostrar mensaje de éxito o error -->
-        <?php
+
+        
+    </div>
+            <!-- Mostrar mensaje de éxito o error -->
+    <?php
         if (!empty($mensaje)) {
-            echo '<div class="alert ' . (strpos($mensaje, "Error") !== false ? 'alert-danger' : 'alert-success') . ' mt-3" role="alert">' . $mensaje . '</div>';
+            echo '<div class="alert ' . (strpos($mensaje, "Error") !== false ? 'alert-danger' : 'alert-success') . ' mt-3 card-width" role="alert">' . $mensaje . '</div>';
         }
         ?>
-    </div>
     <!-- Fin del contenido principal -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>

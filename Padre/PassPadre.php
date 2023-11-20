@@ -62,7 +62,7 @@
 
 
         <!-- Formulario para cambiar la contraseña -->
-        <div class="card form-container mx-auto p-2 mt-3" style="width: 500px">
+        <div class="card form-container mx-auto p-2 mt-3 card-width">
             <form method="POST">
                 <div class="form-row">
                     <label class="h5" for="current_password">Contraseña Actual:</label>
@@ -101,25 +101,25 @@
                     // Actualizar la contraseña en la base de datos
                     $updateSql = "UPDATE padre SET password = '$newPassword' WHERE id = $userId";
                     if ($conn->query($updateSql)) {
-                        echo "<div class=\"alert-success mx-auto\" style=\"width: 500px\">
+                        echo "<div class=\"alert-success mx-auto card-width\">
                         <span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span>
                         Contraseña actualizada con éxito.
                       </div>";
                     } else {
-                        echo "<div class=\"alert mx-auto\" style=\"width: 500px\">
+                        echo "<div class=\"alert mx-auto card-width\">
                         <span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span>
                         Error al actualizar la contraseña: " . $conn->error."
                       </div>";
                         
                     }
                 } else {
-                    echo "<div class=\"alert mx-auto\" style=\"width: 500px\">
+                    echo "<div class=\"alert mx-auto card-width\">
                     <span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span>
                     La contraseña actual no es válida.
                   </div>";
                 }
             } else {
-                echo "<div class=\"alert mx-auto\" style=\"width: 500px\">
+                echo "<div class=\"alert mx-auto card-width\">
                         <span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span>
                         Error al obtener la contraseña actual: " . $conn->error."
                       </div>";

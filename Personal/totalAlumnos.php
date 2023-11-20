@@ -33,15 +33,15 @@
                 session_start();
                 if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
                 ?>
-                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action" aria-current="true">Página Principal</a>
+                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action">Página Principal</a>
                 <?php  
                 }else{
                 ?>
-                <a href="personal.php" class="list-group-item list-group-item-action" aria-current="true">Página Principal</a>
+                <a href="personal.php" class="list-group-item list-group-item-action">Página Principal</a>
                 <?php 
                 }
             ?>
-                <a href="totalAlumnos.php" class="list-group-item list-group-item-action active">Alumnos</a>
+                <a href="totalAlumnos.php" class="list-group-item list-group-item-action active" aria-current="true">Alumnos</a>
                 <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Pagos
                 </a>
@@ -174,7 +174,7 @@
     ?>
 
       <!-- Tabla de resultados -->
-      <div class="mx-auto p-2" style="width: 90vw">
+      <div class="mx-auto p-2" style="width: 90vw; overflow-x:auto">
         <table class="table table-striped table-bordered">
 
           <tr class="table-info">
