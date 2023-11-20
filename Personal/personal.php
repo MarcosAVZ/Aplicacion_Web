@@ -22,12 +22,12 @@ if ($conexion->connect_errno) {
 <body>
 
     <!-- Código para la barra lateral -->
-    <header class="header">
+    <header class="header" id="header">
         <!-- Cambiar título para que corresponda a la página -->
         <a type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
             <img src="../Css/hamburguesa.png" width="50px">
         </a>
-        <h1 style="text-align: center; color: #05429f">Sistema de Gestión de Educar para Transformar</h1>
+        <h1 style="color: #05429f" id="titulo">Sistema de Gestión de Educar para Transformar</h1>
     </header>
 
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
@@ -40,18 +40,18 @@ if ($conexion->connect_errno) {
                 <img src="../Css/Logotipo200x200.png" class="rounded mx-auto d-block">
             </div>
             <div class="list-group">
-            <?php  
+                <?php
                 session_start();
                 if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
                 ?>
-                <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
-                <?php  
-                }else{
+                    <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php
+                } else {
                 ?>
-                <a href="personal.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
-                <?php 
+                    <a href="personal.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                <?php
                 }
-            ?>
+                ?>
                 <a href="totalAlumnos.php" class="list-group-item list-group-item-action">Alumnos</a>
                 <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Pagos
@@ -79,7 +79,10 @@ if ($conexion->connect_errno) {
                 </ul>
 
             </div>
-            <a href="..\index2.php" class="btn btn-danger" style="position: fixed; bottom: 20px">Cerrar sesión</a>
+            <div style="position: fixed; bottom: 20px">
+                <button class="btn btn-secondary" id="modo-daltonico-btn" onclick="activarModoDaltonico()">Modo Daltónico</button>
+                <a href="..\index2.php" class="btn btn-danger">Cerrar sesión</a>
+            </div>
         </div>
     </div>
     <!-- Termina el bloque de código del sidebar -->
@@ -112,7 +115,89 @@ if ($conexion->connect_errno) {
         <img src="../Css/Logotipo200x200.png">
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script>
+        function activarModoDaltonico() {
+            // Obtener el estado actual del modo daltónico
+            var modoDaltonico = obtenerModoDaltonico();
 
+            // Cambiar el estado del modo daltónico
+            modoDaltonico = !modoDaltonico;
+
+            // Guardar el estado del modo daltónico en una cookie con una duración de 30 días
+            document.cookie = "modoDaltonico=" + modoDaltonico + "; expires=" + obtenerFechaExpiracion(30);
+
+            // Aplicar los cambios del modo daltónico
+            aplicarModoDaltonico(modoDaltonico);
+        }
+
+        function obtenerModoDaltonico() {
+            // Obtener el valor de la cookie de modoDaltonico
+            var cookies = document.cookie.split(";");
+
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+
+                // Verificar si la cookie es la de modoDaltonico
+                if (cookie.indexOf("modoDaltonico=") === 0) {
+                    // Obtener el valor de la cookie
+                    var valor = cookie.substring("modoDaltonico=".length, cookie.length);
+
+                    // Convertir el valor a booleano
+                    return valor === "true";
+                }
+            }
+
+            // Valor predeterminado si no se encuentra la cookie
+            return false;
+        }
+
+        function aplicarModoDaltonico(modoDaltonico) {
+            // Aquí puedes agregar el código para cambiar los estilos de tu página en modo daltónico
+            // por ejemplo, cambiando los colores de fondo, texto, etc.
+
+            if (modoDaltonico) {
+                // Aplicar estilos para modo daltónico
+                document.body.classList.add("modo-daltonico");
+                document.getElementById("header").classList.add('modo-daltonico-header');
+                // document.getElementById("titulo").classList.add('modo-daltonico-titulo');
+                document.getElementById("titulo").style.color="#f57600";
+
+                const btnactive = document.querySelector('.active');
+                btnactive.style.backgroundColor = 'yellow';
+                btnactive.style.color = 'black';
+
+                const btndanger = document.querySelector('.btn-danger');
+                btndanger.style.backgroundColor = '#5ba300'
+                btndanger.style.color = 'black';
+            } else {
+                // Quitar estilos de modo daltónico
+                document.body.classList.remove("modo-daltonico");
+                document.getElementById("header").classList.remove('modo-daltonico-header');
+                document.getElementById("titulo").style.color = '#05429f';
+
+
+                const btnactive = document.querySelector('.active');
+                btnactive.style.backgroundColor = '#0d6efd';
+                btnactive.style.color = 'white';
+
+                const btndanger = document.querySelector('.btn-danger');
+                btndanger.style.backgroundColor = '#dc3545'
+                btndanger.style.color = 'white';
+            }
+        }
+
+        function obtenerFechaExpiracion(dias) {
+            var fecha = new Date();
+            fecha.setTime(fecha.getTime() + (dias * 24 * 60 * 60 * 1000));
+            return fecha.toUTCString();
+        }
+
+        // Al cargar la página, aplicar el modo daltónico almacenado en la cookie
+        window.onload = function() {
+            var modoDaltonico = obtenerModoDaltonico();
+            aplicarModoDaltonico(modoDaltonico);
+        };
+    </script>
 </body>
 
 </html>

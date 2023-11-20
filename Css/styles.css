@@ -11,9 +11,10 @@ body {
   align-items: center;
 }
 
-.header h1 {
+#titulo {
   text-align: center;
   margin: 0;
+  color: #05429f;
 }
 
 #footer {
@@ -121,4 +122,16 @@ body {
   .form-group {
     margin-bottom: 10px;
   }
+}
+
+/* Modo daltónico */
+.modo-daltonico{
+  background-color:#b3c7f7;
+}
+.modo-daltonico-header{
+  background-color: #00b4c5;
+  
+}
+.modo-daltonico-titulo{
+  color: #f57600;
 }
