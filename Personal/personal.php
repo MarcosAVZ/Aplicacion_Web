@@ -15,6 +15,7 @@ if ($conexion->connect_errno) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../Css/styles.css">
     <title>Principal</title>
 </head>
@@ -44,17 +45,17 @@ if ($conexion->connect_errno) {
                 session_start();
                 if (isset($_SESSION['autoridad']) && $_SESSION['autoridad'] == 1) {
                 ?>
-                    <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                    <a href="../Autoridad/autoridad.php" class="list-group-item list-group-item-action active" aria-current="true"><i class="bi bi-app pe-2" style="color: cornflowerblue;"></i>PPágina Principal</a>
                 <?php
                 } else {
                 ?>
-                    <a href="personal.php" class="list-group-item list-group-item-action active" aria-current="true">Página Principal</a>
+                    <a href="personal.php" class="list-group-item list-group-item-action active" aria-current="true"><i class="bi bi-app pe-2" style="color: cornflowerblue;"></i>Página Principal</a>
                 <?php
                 }
                 ?>
-                <a href="totalAlumnos.php" class="list-group-item list-group-item-action">Alumnos</a>
+                <a href="totalAlumnos.php" class="list-group-item list-group-item-action"><i class="bi bi-people pe-2" style="color: cornflowerblue;"></i>Alumnos</a>
                 <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Pagos
+                    <i class="bi bi-cash-coin  pe-2" style="color: cornflowerblue;"></i>Pagos
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="Cuotas/Pagos.php">Lista Pagos</a></li>
@@ -62,7 +63,7 @@ if ($conexion->connect_errno) {
                     <li><a class="dropdown-item" href="montoCuota.php">Actualizar precios</a></li>
                 </ul>
                 <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Cursos y Horarios
+                    <i class="bi bi-calendar pe-2" style="color: cornflowerblue;"></i>Cursos y Horarios
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="cursosHorarios.php">Generar Horario</a></li>
@@ -71,7 +72,7 @@ if ($conexion->connect_errno) {
                     <li><a class="dropdown-item" href="cargarCursos.php">Agregar Curso</a></li>
                 </ul>
                 <a class="dropdown-toggle list-group-item list-group-item-action" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Matriculación
+                    <i class="bi bi-view-list  pe-2" style="color: cornflowerblue;"></i>Matriculación
                 </a>
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="MatricularAlumno.php">Matricular Alumno</a></li>
@@ -160,7 +161,7 @@ if ($conexion->connect_errno) {
                 document.body.classList.add("modo-daltonico");
                 document.getElementById("header").classList.add('modo-daltonico-header');
                 // document.getElementById("titulo").classList.add('modo-daltonico-titulo');
-                document.getElementById("titulo").style.color="#f57600";
+                document.getElementById("titulo").style.color = "#f57600";
 
                 const btnactive = document.querySelector('.active');
                 btnactive.style.backgroundColor = 'yellow';
